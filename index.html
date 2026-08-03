@@ -466,7 +466,7 @@
   <!-- TAB 9: ELINT / ESM -->
   <section class="panel" id="p-elint">
     <div class="scopetabs" id="elinttabs">
-      <button data-e="pdw" class="on">Intercept &amp; PDW</button><button data-e="eid">Emitter ID</button><button data-e="geo">Geolocation</button><button data-e="rx">ESM Receivers</button>
+      <button data-e="pdw" class="on">Intercept &amp; PDW</button><button data-e="eid">Emitter ID</button><button data-e="geo">Geolocation</button><button data-e="rx">ESM Receivers</button><button data-e="interf">Interferometer</button><button data-e="music">Array / MUSIC</button><button data-e="caf">Cross-Ambiguity</button>
     </div>
     <div class="layout">
       <div class="controls">
@@ -490,6 +490,20 @@
         <div class="ctl" id="el-rxtype-wrap" style="display:none"><label>ESM receiver</label><select id="el-rxtype"></select></div>
         <div class="ctl" id="el-agility-wrap" style="display:none"><label>Emitter frequency</label><div class="seg" id="el-agility"><button data-o="fixed" class="on">Fixed</button><button data-o="hop">Agile / hopping</button></div></div>
         <div class="ctl" id="el-dwell-wrap" style="display:none"><label>Emitter on-time <b><span id="el-dwellv">35</span>%</b></label><input type="range" id="el-dwell" min="5" max="100" step="5" value="35"></div>
+        <div class="ctl" id="el-if-d-wrap" style="display:none"><label>Baseline d/&lambda; <b><span id="el-if-dv">2.0</span></b></label><input type="range" id="el-if-d" min="0.25" max="8" step="0.05" value="2"></div>
+        <div class="ctl" id="el-if-aoa-wrap" style="display:none"><label>True AOA <b><span id="el-if-aoav">18</span>&deg;</b></label><input type="range" id="el-if-aoa" min="-60" max="60" step="1" value="18"></div>
+        <div class="ctl" id="el-if-snr-wrap" style="display:none"><label>SNR <b><span id="el-if-snrv">20</span> dB</b></label><input type="range" id="el-if-snr" min="0" max="40" step="1" value="20"></div>
+        <div class="ctl" id="el-if-dual-wrap" style="display:none"><label>Ambiguity resolution</label><div class="seg" id="el-if-dual"><button data-o="off" class="on">Single baseline</button><button data-o="on">+ &lambda;/2 baseline</button></div></div>
+        <div class="ctl" id="el-mu-n-wrap" style="display:none"><label>Array elements N <b><span id="el-mu-nv">10</span></b></label><input type="range" id="el-mu-n" min="4" max="16" step="1" value="10"></div>
+        <div class="ctl" id="el-mu-a1-wrap" style="display:none"><label>Source 1 AOA <b><span id="el-mu-a1v">-6</span>&deg;</b></label><input type="range" id="el-mu-a1" min="-60" max="60" step="1" value="-6"></div>
+        <div class="ctl" id="el-mu-a2-wrap" style="display:none"><label>Source 2 AOA <b><span id="el-mu-a2v">6</span>&deg;</b></label><input type="range" id="el-mu-a2" min="-60" max="60" step="1" value="6"></div>
+        <div class="ctl" id="el-mu-snr-wrap" style="display:none"><label>SNR <b><span id="el-mu-snrv">15</span> dB</b></label><input type="range" id="el-mu-snr" min="-5" max="30" step="1" value="15"></div>
+        <div class="ctl" id="el-mu-snap-wrap" style="display:none"><label>Snapshots <b><span id="el-mu-snapv">120</span></b></label><input type="range" id="el-mu-snap" min="10" max="500" step="10" value="120"></div>
+        <div class="ctl" id="el-caf-snr-wrap" style="display:none"><label>SNR <b><span id="el-caf-snrv">6</span> dB</b></label><input type="range" id="el-caf-snr" min="-10" max="20" step="1" value="6"></div>
+        <div class="ctl" id="el-caf-dwell-wrap" style="display:none"><label>Dwell time <b><span id="el-caf-dwellv">8</span> ms</b></label><input type="range" id="el-caf-dwell" min="2" max="16" step="1" value="8"></div>
+        <div class="ctl" id="el-caf-bw-wrap" style="display:none"><label>Signal bandwidth <b><span id="el-caf-bwv">50</span>%</b></label><input type="range" id="el-caf-bw" min="5" max="100" step="5" value="50"></div>
+        <div class="ctl" id="el-caf-tdoa-wrap" style="display:none"><label>True TDOA <b><span id="el-caf-tdoav">6</span> &micro;s</b></label><input type="range" id="el-caf-tdoa" min="-15" max="15" step="1" value="6"></div>
+        <div class="ctl" id="el-caf-fdoa-wrap" style="display:none"><label>True FDOA <b><span id="el-caf-fdoav">300</span> Hz</b></label><input type="range" id="el-caf-fdoa" min="-500" max="500" step="20" value="300"></div>
       </div>
       <div class="stage">
         <div class="can-wrap"><canvas id="c-elint"></canvas><div class="tip" id="tip-elint"></div></div>
@@ -882,6 +896,20 @@
         <span class="drives">Drives: self-protection jamming, decoys &amp; chaff kinematics, RWR threat presentation, and the electronic-protection counters shown per technique (Deception, RWR, Decoys &amp; Chaff).</span></li>
       <li><b>Paul E. Hannen</b> — <i>Radar and Electronic Warfare Principles for the Non-Specialist</i>. SciTech / IET, 2016.
         <span class="drives">Drives: cross-cutting radar &amp; EW definitions and first-order relationships used throughout for framing and sanity checks.</span></li>
+    </ol>
+
+    <h3>SIGINT · ELINT / ESM references</h3>
+    <ol>
+      <li><b>Richard G. Wiley</b> — <i>ELINT: The Interception and Analysis of Radar Signals</i>. Artech House.
+        <span class="drives">Drives: intercept, PDW formation, and de-interleaving (ELINT / ESM tab).</span></li>
+      <li><b>Sue Robertson</b> — <i>Practical ESM Analysis</i>. Artech House.
+        <span class="drives">Drives: emitter sorting / identification and receiver probability-of-intercept (ELINT / ESM tab).</span></li>
+      <li><b>Nicholas A. O'Donoughue</b> — <i>Emitter Detection and Geolocation for Electronic Warfare</i>. Artech House.
+        <span class="drives">Drives: AOA / TDOA / FDOA geolocation, the Cram&eacute;r&ndash;Rao (CRLB) error ellipse, and GDOP.</span></li>
+      <li><b>James Genova</b> — <i>Electronic Warfare Signal Processing</i>. Artech House.
+        <span class="drives">Drives: receiver signal processing and intercept-receiver architectures (ELINT / ESM).</span></li>
+      <li><b>Andrea De Martino</b> — <i>Introduction to Modern EW Systems</i>. Artech House, 2018.
+        <span class="drives">Drives: cross-cutting framing of modern EW receivers, ES, and jamming.</span></li>
     </ol>
 
     <h3>General parameter references</h3>
@@ -1757,8 +1785,8 @@ function configRxSliders(){
 function selectRxStage(i){ rxSel=i; configRxSliders(); computeRx(); }
 
 /* ==================================================================
-   TAB 9 — ELINT / ESM   [Wiley ELINT; Robertson, Practical ESM Analysis;
-   Emitter Detection & Geolocation for EW; Genova, EW Signal Processing]
+   TAB 9 — ELINT / ESM   [Wiley, ELINT; Robertson, Practical ESM Analysis;
+   O'Donoughue, Emitter Detection & Geolocation for EW; Genova, EW Signal Processing]
    ================================================================== */
 // Emitters: roster radars + extras. rf GHz, pw µs, pri µs, aoa deg, scan, mode, side.
 const ESM_EMIT=[
@@ -1796,7 +1824,11 @@ function updateElintControls(){
   show('el-geomethod-wrap',geo); show('el-err-wrap',geo); show('el-nrx-wrap',geo&&!run); show('el-ex-wrap',geo); show('el-ey-wrap',geo);
   show('el-gdop-wrap',geo&&!run); show('el-nsamp-wrap',geo&&!run); show('el-mc-wrap',geo&&!run);
   show('el-rxtype-wrap',rx); show('el-agility-wrap',rx); show('el-dwell-wrap',rx);
-  gid('el-ctlh').textContent = pdw?'Intercept':eid?'Emitter ID':geo?'Geolocation':'ESM receivers';
+  const interf=m==='interf', music=m==='music', caf=m==='caf';
+  show('el-if-d-wrap',interf);show('el-if-aoa-wrap',interf);show('el-if-snr-wrap',interf);show('el-if-dual-wrap',interf);
+  show('el-mu-n-wrap',music);show('el-mu-a1-wrap',music);show('el-mu-a2-wrap',music);show('el-mu-snr-wrap',music);show('el-mu-snap-wrap',music);
+  show('el-caf-snr-wrap',caf);show('el-caf-dwell-wrap',caf);show('el-caf-bw-wrap',caf);show('el-caf-tdoa-wrap',caf);show('el-caf-fdoa-wrap',caf);
+  gid('el-ctlh').textContent = pdw?'Intercept':eid?'Emitter ID':geo?'Geolocation':interf?'Interferometer DF':music?'Array / MUSIC':caf?'Cross-ambiguity':'ESM receivers';
 }
 function drawELINT(){
   const cel=gid('c-elint'); if(!cel || cel.parentElement.clientWidth<60) return;
@@ -1804,6 +1836,9 @@ function drawELINT(){
   if(elintMode==='pdw') drawPDW();
   else if(elintMode==='eid') drawEID();
   else if(elintMode==='geo') drawGeo();
+  else if(elintMode==='interf') drawInterf();
+  else if(elintMode==='music') drawMUSIC();
+  else if(elintMode==='caf') drawCAF();
   else drawRxCompare();
 }
 function drawPDW(){
@@ -1992,7 +2027,7 @@ function drawGeo(){
     ? '<b>TDOA + CRLB.</b> Each station pair gives a hyperbolic line of position (constant range-difference). The CRLB ellipse and GDOP quantify the fix; note the hyperbolas run nearly parallel far from the baseline, inflating GDOP there.'
     : method==='fdoa'
     ? '<b>FDOA + CRLB.</b> Moving stations measure a Doppler difference → an iso-Doppler line of position (illustrative). Alone its geometry is weak in some regions; it is designed to be paired with TDOA.'
-    : '<b>TDOA + FDOA combined.</b> A single station pair yields <i>two independent</i> lines of position — a TDOA hyperbola and an FDOA iso-Doppler curve — that cross at a favourable (near-orthogonal) angle. The combined CRLB ellipse is far tighter and rounder than either measurement alone, which is why modern two-ship geolocation fuses TDOA and FDOA. From <i>Emitter Detection & Geolocation for EW</i>.';
+    : '<b>TDOA + FDOA combined.</b> A single station pair yields <i>two independent</i> lines of position — a TDOA hyperbola and an FDOA iso-Doppler curve — that cross at a favourable (near-orthogonal) angle. The combined CRLB ellipse is far tighter and rounder than either measurement alone, which is why modern two-ship geolocation fuses TDOA and FDOA. See O&rsquo;Donoughue, <i>Emitter Detection and Geolocation for Electronic Warfare</i>.';
   gid('el-explain').innerHTML='';
 }
 let geoRunPos=0, geoLastT2=0, geoSamples=[], geoSig='', geoLastBin=-1;
@@ -2077,7 +2112,7 @@ function drawRxCompare(){ // animated probability-of-intercept simulator (freque
   let hh='<table class="oob" style="margin-top:10px"><tr><th>Receiver</th><th class="num">Sensitivity</th><th class="num">Inst. BW</th><th>Resolution</th><th class="num">POI</th><th>Notes</th></tr>';
   RX_TYPES.forEach((r,i)=>{ hh+=`<tr style="${i===ri?'background:rgba(57,135,229,0.12)':''}"><td>${r.name}</td><td class="num">${r.sens} dBm</td><td class="num">${r.ibw} MHz</td><td>${r.res}</td><td class="num">${(r.poi*100).toFixed(0)}%</td><td>${r.note}</td></tr>`; });
   hh+='</table>'; gid('el-table').innerHTML=hh;
-  gid('el-note').innerHTML='<b>POI vs. sensitivity.</b> A scanning <b>superheterodyne</b> (narrow window sweeping in frequency) wins sensitivity/selectivity but misses short or agile emissions when it is tuned elsewhere — switch the emitter to <b>agile/hopping</b> or shorten its on-time and watch POI collapse. Wide-open <b>crystal-video/IFM</b> and parallel <b>channelized/digital</b> receivers cover the band continuously (high POI) but hear less far away. Robertson; Poisel; De Martino.';
+  gid('el-note').innerHTML='<b>POI vs. sensitivity.</b> A scanning <b>superheterodyne</b> (narrow window sweeping in frequency) wins sensitivity/selectivity but misses short or agile emissions when it is tuned elsewhere — switch the emitter to <b>agile/hopping</b> or shorten its on-time and watch POI collapse. Wide-open <b>crystal-video/IFM</b> and parallel <b>channelized/digital</b> receivers cover the band continuously (high POI) but hear less far away. Wiley, <i>ELINT</i>; Robertson, <i>Practical ESM Analysis</i>; Genova, <i>EW Signal Processing</i>.';
   gid('el-explain').innerHTML='';
 }
 
@@ -2435,7 +2470,7 @@ function drawLine(cid,tid,xs,series,opts){
   const {gx,gy}=axes(ctx,w,h,xMin,xMax,yMin,yMax,opts.xLabel,opts.yLabel,niceTicks(xMin,xMax,6),niceTicks(yMin,yMax,5));
   if(opts.threshold!==undefined){const y=gy(opts.threshold);ctx.strokeStyle=css('--muted');ctx.lineWidth=1.4;ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(w-PAD.r,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=css('--muted');ctx.font='10px system-ui';ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillText('threshold '+opts.threshold+' dB',PAD.l+4,y-2);}
   for(const s of series){ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.setLineDash(s.dash?[6,4]:[]);ctx.beginPath();for(let i=0;i<xs.length;i++){const X=gx(xs[i]),Y=gy(Math.max(yMin,Math.min(yMax,s.y[i])));i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);}ctx.stroke();ctx.setLineDash([]);}
-  if(opts.markers)for(const m of opts.markers){if(m.x<xMin||m.x>xMax)continue;const x=gx(m.x);ctx.strokeStyle=m.color;ctx.lineWidth=1.4;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,h-PAD.b);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=m.color;ctx.beginPath();ctx.arc(x,gy(opts.threshold),4,0,TAU);ctx.fill();ctx.font='10px system-ui';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(m.x.toFixed(0)+' km',x,gy(opts.threshold)-6);}
+  if(opts.markers)for(const m of opts.markers){if(m.x<xMin||m.x>xMax)continue;const x=gx(m.x);ctx.strokeStyle=m.color;ctx.lineWidth=1.4;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,h-PAD.b);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=m.color;ctx.beginPath();ctx.arc(x,gy(opts.threshold),4,0,TAU);ctx.fill();ctx.font='10px system-ui';ctx.textAlign='center';ctx.textBaseline='bottom';const named=(m.label&&m.label.length);ctx.fillText(named?m.label:(m.x.toFixed(0)+(opts.markerUnit||'')),x,gy(opts.threshold)-(named?15:6));}
   watermark(ctx,w,h);attachHover(c,tid,xs,series,gx,gy,xMin,xMax,' km',opts.unit||'',v=>v.toFixed(1));}
 function attachHover(c,tid,xs,series,gx,gy,xMin,xMax,xu,yu,fmt){
   const tip=document.getElementById(tid);if(!tip)return;
@@ -2597,6 +2632,9 @@ segWire('el-view',()=>drawELINT());
 segWire('el-geomethod',()=>drawELINT());
 segWire('el-gdop',()=>drawELINT());
 segWire('el-mc',()=>drawELINT());
+segWire('el-if-dual',()=>drawELINT()); listen(['el-if-d','el-if-aoa','el-if-snr'],drawELINT);
+listen(['el-mu-n','el-mu-a1','el-mu-a2','el-mu-snr','el-mu-snap'],drawELINT);
+listen(['el-caf-snr','el-caf-dwell','el-caf-bw','el-caf-tdoa','el-caf-fdoa'],drawELINT);
 segWire('el-agile',()=>drawELINT());
 segWire('el-agility',()=>drawELINT());
 segWire('el-anim',b=>{elintAnim=b.dataset.o==='on';drawELINT();});
@@ -2958,6 +2996,147 @@ function drawBurnMC(){
   if(n){ vline(mean,css('--s2'),'mean'); vline(pct(0.1),css('--muted'),'P10'); vline(pct(0.9),css('--muted'),'P90'); }
   watermark(ctx,w,h);
 }
+/* ===== ELINT interesting-math demos (O&rsquo;Donoughue) ===== */
+function drawInterf(){
+  const dlam=+gid('el-if-d').value, aoaDeg=+gid('el-if-aoa').value, snr=+gid('el-if-snr').value, dual=segOn('el-if-dual')==='on';
+  gid('el-if-dv').textContent=dlam.toFixed(2); gid('el-if-aoav').textContent=aoaDeg; gid('el-if-snrv').textContent=snr;
+  const psi=aoaDeg*D2R, snrlin=Math.pow(10,snr/10), sigphi=1/Math.sqrt(2*snrlin);
+  const wrap=x=>{ let y=(x+Math.PI)%(2*Math.PI); if(y<0)y+=2*Math.PI; return y-Math.PI; };
+  const phiW=wrap(2*Math.PI*dlam*Math.sin(psi)+sigphi*randn());
+  const cands=[]; const kmax=Math.ceil(dlam*2)+1;
+  for(let k=-kmax;k<=kmax;k++){ const s=(phiW+2*Math.PI*k)/(2*Math.PI*dlam); if(Math.abs(s)<=1) cands.push(Math.asin(s)/D2R); }
+  cands.sort((a,b)=>a-b);
+  let resolved=null;
+  if(dual){ const ds=0.5, phiS=wrap(2*Math.PI*ds*Math.sin(psi)+sigphi*randn()); const coarse=Math.asin(Math.max(-1,Math.min(1,phiS/(2*Math.PI*ds))))/D2R;
+    resolved=cands.reduce((a,b)=>Math.abs(b-coarse)<Math.abs(a-coarse)?b:a, cands[0]); }
+  const xs=[],y1=[],y2=[];
+  for(let th=-90;th<=90;th+=0.5){ const s=Math.sin(th*D2R);
+    y1.push(Math.abs(Math.cos(Math.PI*dlam*(s-Math.sin(psi)))));
+    y2.push(dual?Math.abs(Math.cos(Math.PI*0.5*(s-Math.sin(psi)))):0); xs.push(th); }
+  const series=[{y:y1,color:css('--s1'),label:'baseline d/λ='+dlam.toFixed(1)}];
+  if(dual) series.push({y:y2,color:css('--s3'),label:'λ/2 baseline',dash:true});
+  const mk=cands.map(c=>({x:c,color:css('--muted'),label:''})); mk.push({x:aoaDeg,color:css('--scope'),label:'true'});
+  if(resolved!=null) mk.push({x:resolved,color:css('--jam'),label:'fix'});
+  drawLine('c-elint','tip-elint',xs,series,{xLabel:'Angle (°)',yLabel:'Interferometer response',yMin:0,yMax:1.05,xMin:-90,xMax:90,threshold:0.5,markers:mk,unit:'',markerUnit:'°'});
+  const err = resolved!=null? Math.abs(resolved-aoaDeg) : NaN;
+  const sig1 = sigphi/(2*Math.PI*dlam*Math.max(0.2,Math.cos(psi)))/D2R;
+  gid('el-cap').textContent='Two-element phase interferometer: φ = 2π(d/λ)·sinψ. Wide baselines are precise but ambiguous (grating lobes); a short λ/2 baseline resolves which lobe is real.';
+  gid('el-readouts').innerHTML=
+    '<div class="stat"><div class="k">Baseline</div><div class="v" style="font-size:15px">d/λ = '+dlam.toFixed(2)+'</div></div>'+
+    '<div class="stat"><div class="k">Ambiguous solutions</div><div class="v" style="color:'+(cands.length>1?'var(--jam)':'var(--good)')+'">'+cands.length+'</div></div>'+
+    '<div class="stat"><div class="k">'+(resolved!=null?'Resolved AOA (err)':'Candidate AOAs')+'</div><div class="v" style="font-size:15px">'+(resolved!=null?resolved.toFixed(1)+'° ('+err.toFixed(1)+'°)':cands.map(c=>c.toFixed(0)).join(', ')+'°')+'</div></div>'+
+    '<div class="stat"><div class="k">Angle 1σ ∝ 1/(d/λ)</div><div class="v">'+sig1.toFixed(2)+' <small>°</small></div></div>';
+  gid('el-table').innerHTML='';
+  gid('el-note').innerHTML='<b>Phase interferometry.</b> The phase measured across the baseline gives AOA via <span class="eq">ψ = sin⁻¹(λφ / 2πd)</span>. For <b>d/λ ≤ 0.5</b> there is one unambiguous but coarse solution; as the baseline grows, accuracy improves as ~1/(d/λ) but the phase wraps, creating <b>'+cands.length+' grating-lobe ambiguities</b> here. Enable the <b>+λ/2 baseline</b> and its single broad lobe selects the correct ambiguity — the classic long/short-baseline interferometer that buys both precision and unambiguity. O&rsquo;Donoughue, <i>Emitter Detection and Geolocation for EW</i>, Ch.&nbsp;7.4.';
+  gid('el-explain').innerHTML='';
+}
+function drawMUSIC(){
+  const N=+gid('el-mu-n').value, a1=+gid('el-mu-a1').value, a2=+gid('el-mu-a2').value, snr=+gid('el-mu-snr').value, snap=+gid('el-mu-snap').value;
+  gid('el-mu-nv').textContent=N; gid('el-mu-a1v').textContent=a1; gid('el-mu-a2v').textContent=a2; gid('el-mu-snrv').textContent=snr; gid('el-mu-snapv').textContent=snap;
+  const sv=thd=>{ const s=Math.sin(thd*D2R), re=new Float64Array(N), im=new Float64Array(N); for(let n=0;n<N;n++){const ph=Math.PI*n*s; re[n]=Math.cos(ph); im[n]=Math.sin(ph);} return {re,im}; };
+  const sig=Math.pow(10,snr/20), na=0.70710678, A1=sv(a1), A2=sv(a2);
+  const Rre=Array.from({length:N},()=>new Float64Array(N)), Rim=Array.from({length:N},()=>new Float64Array(N));
+  for(let t=0;t<snap;t++){ const s1r=sig*na*randn(),s1i=sig*na*randn(),s2r=sig*na*randn(),s2i=sig*na*randn();
+    const xr=new Float64Array(N), xi=new Float64Array(N);
+    for(let n=0;n<N;n++){ xr[n]=s1r*A1.re[n]-s1i*A1.im[n]+s2r*A2.re[n]-s2i*A2.im[n]+na*randn();
+                          xi[n]=s1r*A1.im[n]+s1i*A1.re[n]+s2r*A2.im[n]+s2i*A2.re[n]+na*randn(); }
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++){ Rre[i][j]+=xr[i]*xr[j]+xi[i]*xi[j]; Rim[i][j]+=xi[i]*xr[j]-xr[i]*xi[j]; } }
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){ Rre[i][j]/=snap; Rim[i][j]/=snap; }
+  const R0re=Rre.map(r=>Float64Array.from(r)), R0im=Rim.map(r=>Float64Array.from(r)); // copy for Bartlett
+  function topEig(){ let vr=new Float64Array(N),vi=new Float64Array(N); for(let i=0;i<N;i++){vr[i]=randn();vi[i]=randn();} let lam=0;
+    for(let it=0;it<80;it++){ const wr=new Float64Array(N),wi=new Float64Array(N);
+      for(let i=0;i<N;i++){let sr=0,si=0; for(let j=0;j<N;j++){ sr+=Rre[i][j]*vr[j]-Rim[i][j]*vi[j]; si+=Rre[i][j]*vi[j]+Rim[i][j]*vr[j]; } wr[i]=sr;wi[i]=si; }
+      let nrm=0; for(let i=0;i<N;i++)nrm+=wr[i]*wr[i]+wi[i]*wi[i]; nrm=Math.sqrt(nrm)||1; for(let i=0;i<N;i++){vr[i]=wr[i]/nrm;vi[i]=wi[i]/nrm;} lam=nrm; }
+    return {vr,vi,lam}; }
+  const e1=topEig();
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){ Rre[i][j]-=e1.lam*(e1.vr[i]*e1.vr[j]+e1.vi[i]*e1.vi[j]); Rim[i][j]-=e1.lam*(e1.vi[i]*e1.vr[j]-e1.vr[i]*e1.vi[j]); }
+  const e2=topEig();
+  const proj=(a,e)=>{ let pr=0,pi=0; for(let n=0;n<N;n++){ pr+=e.vr[n]*a.re[n]+e.vi[n]*a.im[n]; pi+=e.vr[n]*a.im[n]-e.vi[n]*a.re[n]; } return pr*pr+pi*pi; };
+  const xs=[],mu=[],bf=[]; let muMax=-1e9,bfMax=-1e9;
+  for(let th=-60;th<=60;th+=0.25){ const a=sv(th);
+    const Pm=1/Math.max(1e-6, N - proj(a,e1) - proj(a,e2)); mu.push(10*Math.log10(Pm)); muMax=Math.max(muMax,mu[mu.length-1]);
+    let br=0; for(let i=0;i<N;i++){ let sr=0,si=0; for(let j=0;j<N;j++){ sr+=R0re[i][j]*a.re[j]-R0im[i][j]*a.im[j]; si+=R0re[i][j]*a.im[j]+R0im[i][j]*a.re[j]; } br+=a.re[i]*sr+a.im[i]*si; }
+    bf.push(10*Math.log10(Math.max(1e-6,br))); bfMax=Math.max(bfMax,bf[bf.length-1]); xs.push(th); }
+  for(let i=0;i<mu.length;i++){ mu[i]-=muMax; bf[i]-=bfMax; }
+  drawLine('c-elint','tip-elint',xs,[{y:mu,color:css('--s2'),label:'MUSIC'},{y:bf,color:css('--muted'),label:'Beamformer (Bartlett)',dash:true}],
+    {xLabel:'Angle (°)',yLabel:'Spatial spectrum (dB)',yMin:-40,yMax:3,xMin:-60,xMax:60,threshold:undefined,markers:[{x:a1,color:css('--scope'),label:''},{x:a2,color:css('--scope'),label:'sources'}],unit:'dB'});
+  const bw=0.886*2/N/D2R;  // ULA (d=λ/2) 3-dB beamwidth, deg
+  const sep=Math.abs(a2-a1);
+  gid('el-cap').textContent='Array direction-finding: MUSIC uses the eigenstructure of the array covariance to resolve sources far closer than the beamwidth — super-resolution the conventional beamformer cannot achieve.';
+  gid('el-readouts').innerHTML=
+    '<div class="stat"><div class="k">Array / beamwidth</div><div class="v" style="font-size:15px">N='+N+' · '+bw.toFixed(1)+'°</div></div>'+
+    '<div class="stat"><div class="k">Source separation</div><div class="v">'+sep.toFixed(1)+' <small>°</small></div></div>'+
+    '<div class="stat"><div class="k">vs beamwidth</div><div class="v" style="font-size:15px;color:'+(sep<bw?'var(--jam)':'var(--good)')+'">'+(sep<bw?'sub-beamwidth':'resolvable')+'</div></div>'+
+    '<div class="stat"><div class="k">Snapshots · SNR</div><div class="v" style="font-size:15px">'+snap+' · '+snr+' dB</div></div>';
+  gid('el-table').innerHTML='';
+  gid('el-note').innerHTML='<b>MUSIC (MUltiple SIgnal Classification).</b> The array covariance <span class="eq">R = Σ P a(θ)aᴴ(θ) + σ²I</span> splits by eigen-decomposition into a signal subspace (the D largest eigenvalues) and a noise subspace; a steering vector at a true AOA is orthogonal to the noise subspace, so <span class="eq">P(θ) = 1 / (aᴴ UₙUₙᴴ a)</span> spikes there. Bring the two sources within the <b>'+bw.toFixed(1)+'° beamwidth</b>: the Bartlett beamformer merges them into one blob while MUSIC still resolves two sharp peaks — until noise or too few snapshots collapse the subspace estimate. O&rsquo;Donoughue Ch.&nbsp;8.3.4.';
+  gid('el-explain').innerHTML='';
+}
+function cafHeat(v){ v=Math.max(0,Math.min(1,v)); const st=[[13,20,40],[30,90,140],[18,160,120],[120,220,90],[245,245,130]];
+  const t=v*(st.length-1), i=Math.min(st.length-2,Math.floor(t)), f=t-i, a=st[i], b=st[i+1];
+  return 'rgb('+Math.round(a[0]+f*(b[0]-a[0]))+','+Math.round(a[1]+f*(b[1]-a[1]))+','+Math.round(a[2]+f*(b[2]-a[2]))+')'; }
+function drawCAF(){
+  const snr=+gid('el-caf-snr').value, Tms=+gid('el-caf-dwell').value, bwf=+gid('el-caf-bw').value/100, tdoaus=+gid('el-caf-tdoa').value, fdoaHz=+gid('el-caf-fdoa').value;
+  gid('el-caf-snrv').textContent=snr; gid('el-caf-dwellv').textContent=Tms; gid('el-caf-bwv').textContent=Math.round(bwf*100); gid('el-caf-tdoav').textContent=tdoaus; gid('el-caf-fdoav').textContent=fdoaHz;
+  // Self-consistent scales: 1 MHz complex baseband -> 1 sample = 1 us (fine delay);
+  // dwell TIME (ms) sets Doppler resolution 1/T. Delay res set by signal bandwidth 1/B.
+  const fs=1e6, T=Tms*1e-3;
+  let Ndw=Math.max(512,Math.min(16000,Math.round(T*fs)));
+  const B=Math.max(0.03,bwf)*fs;                 // signal bandwidth (Hz)
+  const Lb=Math.max(0,Math.round(fs/B/2));       // half boxcar length -> bandwidth
+  const k0=Math.round(tdoaus*1e-6*fs);           // true delay (samples = us)
+  const nu0=2*Math.PI*fdoaHz/fs;                 // true doppler (rad/sample)
+  const pad=Math.abs(k0)+Lb+2, M=Ndw+2*pad;
+  const wr=new Float64Array(M), wi=new Float64Array(M);
+  for(let n=0;n<M;n++){ wr[n]=randn(); wi[n]=randn(); }
+  const sr=new Float64Array(M), si=new Float64Array(M);   // band-limited source = boxcar-smoothed white
+  for(let n=0;n<M;n++){ let ar=0,ai=0,c=0; for(let k=-Lb;k<=Lb;k++){ const m=n+k; if(m>=0&&m<M){ar+=wr[m];ai+=wi[m];c++;} } sr[n]=ar/c; si[n]=ai/c; }
+  const nsd=Math.pow(10,-snr/20)*0.5;
+  const s1r=new Float64Array(Ndw), s1i=new Float64Array(Ndw), s2r=new Float64Array(Ndw), s2i=new Float64Array(Ndw);
+  for(let n=0;n<Ndw;n++){ const m=n+pad;
+    s1r[n]=sr[m]+nsd*randn(); s1i[n]=si[m]+nsd*randn();
+    const md=m-k0, ph=nu0*n, cp=Math.cos(ph), sp=Math.sin(ph);   // s2 = s1 delayed k0 + doppler nu0
+    const gr=sr[md]||0, gi=si[md]||0;
+    s2r[n]=gr*cp-gi*sp+nsd*randn(); s2i[n]=gr*sp+gi*cp+nsd*randn(); }
+  const Kg=16, Vg=48, fdMax=600;                 // delay +-16us, doppler +-600Hz
+  let peak=0,pk=0,pv=0; const grid=[];
+  // For each delay lag: cross-product sequence, then DFT over the doppler grid (kernel e^{+j nu n}).
+  const Pr=new Float64Array(Ndw), Pi=new Float64Array(Ndw);
+  const nus=new Float64Array(Vg), fds=new Float64Array(Vg);
+  for(let vi2=0;vi2<Vg;vi2++){ fds[vi2]=-fdMax+2*fdMax*vi2/(Vg-1); nus[vi2]=2*Math.PI*fds[vi2]/fs; }
+  for(let vi2=0;vi2<Vg;vi2++) grid.push(new Float64Array(2*Kg+1));
+  for(let ki=0;ki<=2*Kg;ki++){ const kap=ki-Kg;
+    const nlo=Math.max(0,-kap), nhi=Math.min(Ndw,Ndw-kap);
+    for(let n=nlo;n<nhi;n++){ const mm=n+kap;
+      const ar=s1r[n],ai=s1i[n], br=s2r[mm],bi=s2i[mm];        // s1 * conj(s2)
+      Pr[n]=ar*br+ai*bi; Pi[n]=ai*br-ar*bi; }
+    for(let vi2=0;vi2<Vg;vi2++){ const nu=nus[vi2]; let cr=0,ci=0;
+      for(let n=nlo;n<nhi;n++){ const a=nu*n, c=Math.cos(a), s=Math.sin(a);  // e^{+j nu n}
+        cr+=Pr[n]*c-Pi[n]*s; ci+=Pr[n]*s+Pi[n]*c; }
+      const mag=Math.hypot(cr,ci); grid[vi2][ki]=mag;
+      if(mag>peak){peak=mag;pk=kap;pv=fds[vi2];} } }
+  const {c,ctx,w,h}=setupCanvas('c-elint',0.6); ctx.clearRect(0,0,w,h);
+  const xMin=-Kg, xMax=Kg;
+  const {gx,gy}=axes(ctx,w,h,xMin,xMax,-fdMax,fdMax,'Delay τ (µs)','Doppler ν (Hz)',niceTicks(xMin,xMax,6).map(v=>+v.toFixed(0)),niceTicks(-fdMax,fdMax,6).map(v=>Math.round(v)));
+  const cw=(gx(xMax)-gx(xMin))/(2*Kg+1)+1, ch=(gy(-fdMax)-gy(fdMax))/Vg+1;
+  for(let vi2=0;vi2<Vg;vi2++){ for(let ki=0;ki<=2*Kg;ki++){ const kap=ki-Kg;
+    ctx.fillStyle=cafHeat(grid[vi2][ki]/(peak||1)); ctx.fillRect(gx(kap)-cw/2, gy(fds[vi2])-ch/2, cw, ch); } }
+  ctx.strokeStyle=css('--scope'); ctx.setLineDash([3,3]); ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(gx(tdoaus),gy(fdoaHz),12,0,TAU); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle='#fff'; ctx.lineWidth=1.6; ctx.beginPath(); ctx.arc(gx(pk),gy(pv),6,0,TAU); ctx.stroke();
+  watermark(ctx,w,h);
+  let sum=0,cnt=0; for(let vi2=0;vi2<Vg;vi2++)for(let ki=0;ki<=2*Kg;ki++){sum+=grid[vi2][ki];cnt++;} const psr=20*Math.log10(peak/(sum/cnt||1));
+  const dRes=1e6/B, dopRes=1/T;            // delay res (us) ~ 1/B ; doppler res (Hz) ~ 1/T
+  gid('el-cap').textContent='Cross-ambiguity function |χ(ν,τ)| for two intercepts: the 2-D correlation peak locates the time-difference (TDOA) and frequency-difference (FDOA) jointly. Dashed ring = truth, solid = detected peak.';
+  gid('el-readouts').innerHTML=
+    '<div class="stat"><div class="k">TDOA estimate</div><div class="v">'+pk.toFixed(0)+' <small>µs</small></div></div>'+
+    '<div class="stat"><div class="k">FDOA estimate</div><div class="v">'+pv.toFixed(0)+' <small>Hz</small></div></div>'+
+    '<div class="stat"><div class="k">Peak-to-average</div><div class="v">'+psr.toFixed(1)+' <small>dB</small></div></div>'+
+    '<div class="stat"><div class="k">Delay · Doppler res</div><div class="v" style="font-size:15px">'+dRes.toFixed(1)+'µs · '+Math.round(dopRes)+'Hz</div></div>';
+  gid('el-table').innerHTML='';
+  gid('el-note').innerHTML='<b>Cross-ambiguity function (CAF).</b> <span class="eq">χ(ν,τ) = ∫ s₁(t) s₂*(t+τ) e^{-jνt} dt</span>; the peak gives the joint TDOA/FDOA estimate. <b>Delay resolution ≈ 1/bandwidth</b> (drop the signal-bandwidth slider and the peak smears horizontally) and <b>Doppler resolution ≈ 1/dwell-time</b> (shorten the dwell and it smears vertically). Lowering SNR raises the noise floor until the true peak is lost — detection needs enough time·bandwidth·SNR product. This is how two-ship passive geolocation actually measures TDOA and FDOA. O&rsquo;Donoughue Ch.&nbsp;13.4.2.';
+  gid('el-explain').innerHTML='';
+}
+
 function renderAll(){ computeNull();computeSLC();computeEng();computeScan();drawScope();drawDeception(tnow);drawRWR(tnow);drawDecoy(tnow);computeRx();drawELINT();drawStealth();drawSP();drawRHI(tnow);drawMpath();drawDet();drawDyn();drawBudget();computeFund();computeRangeEq();drawBurnMC(); }
 window.addEventListener('resize',renderAll);
 
