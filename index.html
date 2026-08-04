@@ -356,7 +356,7 @@
   <!-- TAB 5: DECEPTION (DRFM) -->
   <section class="panel" id="p-decep">
     <div class="scopetabs" id="deceptabs">
-      <button data-d="rgpo" class="on">Range-Gate Pull-Off</button><button data-d="vgpo">Velocity-Gate Pull-Off</button><button data-d="false">False Targets</button><button data-d="angle">Angle Deception</button>
+      <button data-d="rgpo" class="on">Range-Gate Pull-Off</button><button data-d="vgpo">Velocity-Gate Pull-Off</button><button data-d="false">False Targets</button><button data-d="angle">Angle Deception</button><button data-d="coord">Coordinated RVGPO</button><button data-d="fidelity">DRFM Fidelity</button><button data-d="counter">Counter-DRFM</button><button data-d="dis">Image Synthesizer</button><button data-d="designer">DRFM Designer</button><button data-d="iq">I/Q Image + LO</button>
     </div>
     <div class="layout">
       <div class="controls">
@@ -366,9 +366,41 @@
         <div class="ctl" id="dc-nf-wrap" style="display:none"><label>False targets <b><span id="dc-nfv">6</span></b></label><input type="range" id="dc-nf" min="2" max="16" step="1" value="6"></div>
         <div class="ctl" id="dc-tracker-wrap" style="display:none"><label>Angle tracker</label><select id="dc-tracker"><option value="conical">Conical scan (COSRO/LORO)</option><option value="monopulse">Monopulse</option><option value="tws">Track-while-scan</option></select></div>
         <div class="ctl" id="dc-tech-wrap" style="display:none"><label>Angle technique</label><select id="dc-tech"><option value="invgain">Inverse gain / scan-rate mod</option><option value="crosseye">Cross-eye</option><option value="crosspol">Cross-pol</option></select></div>
-        <div class="ctl"><label>J/S (jammer advantage) <b><span id="dc-jsv">20</span> dB</b></label><input type="range" id="dc-js" min="0" max="40" step="1" value="20"></div>
-        <div class="ctl"><label>Electronic protection</label><div class="seg" id="dc-ep"><button data-o="off" class="on">EP off</button><button data-o="on">EP on</button></div></div>
-        <div class="ctl"><label>Animation</label><div class="seg" id="dc-anim"><button data-o="on" class="on">Run</button><button data-o="off">Freeze</button></div></div>
+        <div id="dc-fid-ctls" style="display:none">
+          <div class="ctl"><label>DRFM phase bits <b><span id="dc-fid-bitsv">3</span></b></label><input type="range" id="dc-fid-bits" min="1" max="6" step="1" value="3"></div>
+          <div class="ctl"><label>Sampling architecture</label><div class="seg" id="dc-fid-samp"><button data-o="amp" class="on">Amplitude</button><button data-o="phase">Phase</button></div></div>
+        </div>
+        <div id="dc-cnt-ctls" style="display:none">
+          <div class="ctl"><label>CPI pulses M <b><span id="dc-cnt-mv">24</span></b></label><input type="range" id="dc-cnt-m" min="8" max="48" step="2" value="24"></div>
+          <div class="ctl"><label>DRFM replay lag <b><span id="dc-cnt-lagv">1</span> PRI</b></label><input type="range" id="dc-cnt-lag" min="1" max="4" step="1" value="1"></div>
+          <div class="ctl"><label>Waveform agility</label><div class="seg" id="dc-cnt-ag"><button data-o="off">Off</button><button data-o="on" class="on">On</button></div></div>
+        </div>
+        <div id="dc-rv-ctls" style="display:none">
+          <div class="ctl"><label>Pull-off technique</label><div class="seg" id="dc-rv-mode"><button data-o="rgpo">RGPO</button><button data-o="vgpo">VGPO</button><button data-o="coord" class="on">Coordinated</button></div></div>
+          <div class="ctl"><label>Pull-off acceleration <b><span id="dc-rv-gv">3</span> g</b></label><input type="range" id="dc-rv-g" min="1" max="9" step="1" value="3"></div>
+        </div>
+        <div id="dc-dis-ctls" style="display:none">
+          <div class="ctl"><label>False-target type</label><select id="dc-dis-preset"><option value="ship">Ship (extended)</option><option value="air">Aircraft</option><option value="point">Point</option></select></div>
+          <div class="ctl"><label>Phase bits k<sub>p</sub> <b><span id="dc-dis-kpv">5</span></b></label><input type="range" id="dc-dis-kp" min="1" max="6" step="1" value="5"></div>
+          <div class="ctl"><label>Gain bits k<sub>g</sub> <b><span id="dc-dis-kgv">2</span></b></label><input type="range" id="dc-dis-kg" min="1" max="4" step="1" value="2"></div>
+          <div class="ctl"><label>Adder word length <b><span id="dc-dis-adderv">16</span> bits</b></label><input type="range" id="dc-dis-adder" min="8" max="20" step="1" value="16"></div>
+        </div>
+        <div id="dc-des-ctls" style="display:none">
+          <div class="ctl"><label>DRFM phase bits <b><span id="dc-des-bitsv">4</span></b></label><input type="range" id="dc-des-bits" min="1" max="8" step="1" value="4"></div>
+          <div class="ctl"><label>Sampling architecture</label><div class="seg" id="dc-des-samp"><button data-o="amp" class="on">Amplitude</button><button data-o="phase">Phase</button></div></div>
+          <div class="ctl"><label>IBW fraction a <b><span id="dc-des-av">80</span>%</b></label><input type="range" id="dc-des-a" min="50" max="95" step="5" value="80"></div>
+          <div class="ctl"><label>Sample rate f<sub>s</sub> <b><span id="dc-des-fsv">2.0</span> GHz</b></label><input type="range" id="dc-des-fs" min="0.5" max="6" step="0.1" value="2"></div>
+          <div class="ctl"><label>Adder word length <b><span id="dc-des-wordv">16</span> bits</b></label><input type="range" id="dc-des-word" min="8" max="24" step="1" value="16"></div>
+          <div class="ctl"><label>Simultaneous false targets <b><span id="dc-des-nftv">8</span></b></label><input type="range" id="dc-des-nft" min="1" max="64" step="1" value="8"></div>
+        </div>
+        <div id="dc-iq-ctls" style="display:none">
+          <div class="ctl"><label>Amplitude imbalance <b><span id="dc-iq-ampv">0.55</span> dB</b></label><input type="range" id="dc-iq-amp" min="0" max="2" step="0.05" value="0.55"></div>
+          <div class="ctl"><label>Phase imbalance <b><span id="dc-iq-phv">3.6</span> °</b></label><input type="range" id="dc-iq-ph" min="0" max="15" step="0.2" value="3.6"></div>
+          <div class="ctl"><label>Mixer / LO isolation <b><span id="dc-iq-isov">60</span> dB</b></label><input type="range" id="dc-iq-iso" min="30" max="80" step="1" value="60"></div>
+        </div>
+        <div class="ctl" id="dc-js-wrap"><label>J/S (jammer advantage) <b><span id="dc-jsv">20</span> dB</b></label><input type="range" id="dc-js" min="0" max="40" step="1" value="20"></div>
+        <div class="ctl" id="dc-ep-wrap"><label>Electronic protection</label><div class="seg" id="dc-ep"><button data-o="off" class="on">EP off</button><button data-o="on">EP on</button></div></div>
+        <div class="ctl" id="dc-anim-wrap"><label>Animation</label><div class="seg" id="dc-anim"><button data-o="on" class="on">Run</button><button data-o="off">Freeze</button></div></div>
       </div>
       <div class="stage">
         <div class="can-wrap"><canvas id="c-decep"></canvas></div>
@@ -550,7 +582,7 @@
   <!-- TAB 11: SIGNAL PROCESSING -->
   <section class="panel" id="p-sp">
     <div class="scopetabs" id="sptabs">
-      <button data-p="pc" class="on">Pulse compression</button><button data-p="mti">MTI &amp; blind speeds</button><button data-p="cfar">CFAR detection</button>
+      <button data-p="pc" class="on">Pulse compression</button><button data-p="mti">MTI &amp; blind speeds</button><button data-p="cfar">CFAR detection</button><button data-p="stapmap">STAP · angle-Doppler</button><button data-p="stapsinr">STAP · SINR/MDV</button><button data-p="stapeig">STAP · eigenspectrum</button><button data-p="stapdpca">STAP · DPCA</button>
     </div>
     <div class="layout">
       <div class="controls">
@@ -573,6 +605,19 @@
           <div class="ctl"><label>Jammer noise lift <b><span id="sp-jamv">0</span> dB</b></label><input type="range" id="sp-jam" min="0" max="25" step="1" value="0"></div>
           <div class="ctl"><label>Clutter distribution</label><div class="seg" id="sp-clut"><button data-o="ray" class="on">Rayleigh</button><button data-o="wbl">Weibull</button><button data-o="k">K</button></div></div>
           <div class="ctl" id="sp-shape-wrap" style="display:none"><label>Clutter spikiness <b><span id="sp-shapev">1.5</span></b> <small style="color:var(--ink2)" id="sp-shapelbl">(shape)</small></label><input type="range" id="sp-shape" min="0.3" max="3" step="0.1" value="1.5"></div>
+        </div>
+        <div id="sp-stap-ctls" style="display:none">
+          <div class="ctl"><label>Array elements N <b><span id="sp-stap-nv">8</span></b></label><input type="range" id="sp-stap-n" min="4" max="14" step="1" value="8"></div>
+          <div class="ctl"><label>Pulses M (CPI) <b><span id="sp-stap-mv">12</span></b></label><input type="range" id="sp-stap-m" min="4" max="20" step="1" value="12"></div>
+          <div class="ctl"><label>PRF <b><span id="sp-stap-prfv">600</span> Hz</b></label><input type="range" id="sp-stap-prf" min="300" max="2000" step="20" value="600"></div>
+          <div class="ctl"><label>Platform velocity <b><span id="sp-stap-vpv">100</span> m/s</b></label><input type="range" id="sp-stap-vp" min="0" max="200" step="5" value="100"></div>
+          <div class="ctl"><label>Clutter-to-noise (ECNR) <b><span id="sp-stap-cnrv">40</span> dB</b></label><input type="range" id="sp-stap-cnr" min="10" max="60" step="1" value="40"></div>
+          <div class="ctl"><label>Look azimuth <b><span id="sp-stap-azv">0</span>°</b></label><input type="range" id="sp-stap-az" min="-60" max="60" step="1" value="0"></div>
+          <div class="ctl" id="sp-stap-vt-wrap"><label>Target radial velocity <b><span id="sp-stap-vtv">40</span> m/s</b></label><input type="range" id="sp-stap-vt" min="-100" max="100" step="1" value="40"></div>
+          <div class="ctl"><label>Barrage jammer</label><div class="seg" id="sp-stap-jam"><button data-o="off" class="on">Off</button><button data-o="on">On</button></div></div>
+          <div class="ctl" id="sp-stap-jaz-wrap" style="display:none"><label>Jammer azimuth <b><span id="sp-stap-jazv">30</span>°</b></label><input type="range" id="sp-stap-jaz" min="-60" max="60" step="1" value="30"></div>
+          <div class="ctl" id="sp-stap-jnr-wrap" style="display:none"><label>Jammer-to-noise <b><span id="sp-stap-jnrv">30</span> dB</b></label><input type="range" id="sp-stap-jnr" min="10" max="50" step="1" value="30"></div>
+          <div class="ctl" id="sp-stap-view-wrap"><label>Map shows</label><div class="seg" id="sp-stap-view"><button data-o="int" class="on">Interference</button><button data-o="adapt">Adapted</button><button data-o="conv">Conventional</button></div></div>
         </div>
         <div class="explain" id="sp-note" style="margin-top:10px;font-size:12.5px"></div>
       </div>
@@ -892,6 +937,12 @@
         <span class="drives">Drives: band-dependent counter-stealth behaviour — why VHF/UHF radars recover low-observable targets (LO / Stealth, VHF counter-stealth systems).</span></li>
       <li><b>Guangfu Tang, Yifeng Cai, Rongbing Gan &amp; Yaodong Zhao</b> — <i>Techniques and System Design of Radar Active Jamming</i>. Springer, 2023.
         <span class="drives">Drives: DRFM active-jamming techniques — RGPO/VGPO, false targets, angle deception (Deception); noise-jamming geometries (Engagement).</span></li>
+      <li><b>Phillip E. Pace</b> — <i>Developing Digital RF Memories and Transceiver Technologies for Electromagnetic Warfare</i>. Artech House, 2022.
+        <span class="drives">Drives: DRFM finite-bit spurious false targets &amp; SNR/SFDR, counter-DRFM waveform agility, coordinated RGPO&ndash;VGPO with range/Doppler-consistency EP, and the Digital Image Synthesizer structured false target (Deception / DRFM sub-modes).</span></li>
+      <li><b>James Ward &amp; Stephen M. Kogon</b> — <i>Space-Time Adaptive Processing for AMTI and GMTI Radar</i> (MIT Lincoln Laboratory tutorial); after J. Ward, <i>Space-Time Adaptive Processing for Airborne Radar</i>, MIT LL Tech. Rep. 1015.
+        <span class="drives">Drives: the space-time steering vector, optimum weights w=R&#8315;&#185;v, the clutter ridge &amp; Brennan&rsquo;s rule, SINR-loss / MDV, and DPCA (STAP sub-modes of Signal Processing).</span></li>
+      <li><b>Rohde &amp; Schwarz</b> — <i>Deceptive Jammer and DRFM Testing</i> (v2.0) &amp; <i>Smart Jammer / DRFM Testing</i>, industry test &amp; measurement application notes (provided).
+        <span class="drives">Supplemental corroboration of deceptive-jammer / DRFM test methods and false-target signatures (Deception / DRFM).</span></li>
       <li><b>Self-Protection Jammer Systems</b> — course reference (provided).
         <span class="drives">Drives: self-protection jamming, decoys &amp; chaff kinematics, RWR threat presentation, and the electronic-protection counters shown per technique (Deception, RWR, Decoys &amp; Chaff).</span></li>
       <li><b>Paul E. Hannen</b> — <i>Radar and Electronic Warfare Principles for the Non-Specialist</i>. SciTech / IET, 2016.
@@ -1344,7 +1395,7 @@ function animLoop(t){
   const dt=(t-lastT)||16; lastT=t; const sdt=dt*simSpeed; tnow+=sdt;
   const a=activeTab();
   if(a==='scope' && animOn && simSpeed>0){ if(scopeMode==='ppi') sweepAng=(sweepAng+sdt*0.0016)%TAU; drawScope(); }
-  else if(a==='decep' && decepAnim){ drawDeception(tnow); }
+  else if(a==='decep' && decepAnim && decepMode!=='fidelity' && decepMode!=='counter' && decepMode!=='dis' && decepMode!=='designer' && decepMode!=='iq'){ drawDeception(tnow); }
   else if(a==='rwr' && rwrAnim){ drawRWR(tnow); }
   else if(a==='decoy' && decoyAnim){ drawDecoy(tnow); }
   else if(a==='elint' && ((elintMode==='pdw'&&elintAnim) || elintMode==='rx' || (elintMode==='geo'&&segOn('el-geomethod')==='run'))){ drawELINT(); }
@@ -1453,11 +1504,21 @@ function segOn(id){ const b=document.querySelector('#'+id+' button.on'); return 
 
 function updateDecepControls(){
   const show=(id,on)=>{ const e=gid(id); if(e) e.style.display=on?'':'none'; };
+  const legacy = decepMode==='rgpo'||decepMode==='vgpo'||decepMode==='false'||decepMode==='angle';
   show('dc-dir-wrap', decepMode==='rgpo'||decepMode==='vgpo');
   show('dc-rate-wrap', decepMode==='rgpo'||decepMode==='vgpo');
   show('dc-nf-wrap', decepMode==='false');
   show('dc-tracker-wrap', decepMode==='angle');
   show('dc-tech-wrap', decepMode==='angle');
+  show('dc-fid-ctls', decepMode==='fidelity');
+  show('dc-cnt-ctls', decepMode==='counter');
+  show('dc-rv-ctls', decepMode==='coord');
+  show('dc-dis-ctls', decepMode==='dis');
+  show('dc-des-ctls', decepMode==='designer');
+  show('dc-iq-ctls', decepMode==='iq');
+  show('dc-js-wrap', legacy);
+  show('dc-ep-wrap', legacy||decepMode==='coord');
+  show('dc-anim-wrap', legacy||decepMode==='coord');
 }
 function drawDeception(t){
   const cel=gid('c-decep'); if(!cel || cel.parentElement.clientWidth<60) return;
@@ -1465,6 +1526,7 @@ function drawDeception(t){
   if(decepMode==='rgpo') return drawGatePull(t,'rgpo');
   if(decepMode==='vgpo') return drawGatePull(t,'vgpo');
   if(decepMode==='false') return drawFalseTargets(t);
+  if(decepMode==='fidelity'||decepMode==='counter'||decepMode==='coord'||decepMode==='dis'||decepMode==='designer'||decepMode==='iq') return drawDRFMdispatch(t);
   return drawAngleDecep(t);
 }
 function drawGatePull(t,kind){
@@ -2241,10 +2303,16 @@ function stealthBudget(){
    ================================================================== */
 let spMode='pc';
 function updateSPControls(){ const show=(id,on)=>{const e=gid(id);if(e)e.style.display=on?'':'none';};
-  show('sp-pc-ctls',spMode==='pc'); show('sp-mti-ctls',spMode==='mti'); show('sp-cfar-ctls',spMode==='cfar');
-  gid('sp-ctlh').textContent = spMode==='pc'?'Pulse compression':spMode==='mti'?'MTI processing':'CFAR detection'; }
+  const stap=spMode.indexOf('stap')===0;
+  show('sp-pc-ctls',spMode==='pc'); show('sp-mti-ctls',spMode==='mti'); show('sp-cfar-ctls',spMode==='cfar'); show('sp-stap-ctls',stap);
+  show('sp-load',!stap);
+  show('sp-stap-view-wrap',spMode==='stapmap');
+  show('sp-stap-vt-wrap',spMode==='stapmap'||spMode==='stapdpca');
+  const jamOn=segOn('sp-stap-jam')==='on'; show('sp-stap-jaz-wrap',stap&&jamOn); show('sp-stap-jnr-wrap',stap&&jamOn);
+  const hdr={pc:'Pulse compression',mti:'MTI processing',cfar:'CFAR detection',stapmap:'STAP · angle-Doppler',stapsinr:'STAP · SINR / MDV',stapeig:'STAP · eigenspectrum',stapdpca:'STAP · DPCA'}[spMode]||'Signal processing';
+  gid('sp-ctlh').textContent=hdr; }
 function drawSP(){ const cel=gid('c-sp'); if(!cel||cel.parentElement.clientWidth<60) return; updateSPControls();
-  if(spMode==='pc') return spPulseComp(); if(spMode==='mti') return spMTI(); return spCFAR(); }
+  if(spMode==='pc') return spPulseComp(); if(spMode==='mti') return spMTI(); if(spMode==='cfar') return spCFAR(); return drawSTAP(); }
 function spPulseComp(){
   const tau=+gid('sp-tau').value, B=+gid('sp-bw').value, sep=+gid('sp-sep').value;
   gid('sp-tauv').textContent=tau; gid('sp-bwv').textContent=B; gid('sp-sepv').textContent=sep.toFixed(1);
@@ -2606,6 +2674,10 @@ const segWire=(grp,cb)=>document.querySelectorAll('#'+grp+' button').forEach(b=>
 segWire('dc-dir',()=>drawDeception(tnow));
 segWire('dc-ep',()=>drawDeception(tnow));
 segWire('dc-anim',b=>{decepAnim=b.dataset.o==='on';drawDeception(tnow);});
+segWire('dc-fid-samp',()=>drawDeception(tnow)); segWire('dc-cnt-ag',()=>drawDeception(tnow)); segWire('dc-rv-mode',()=>drawDeception(tnow)); segWire('dc-des-samp',()=>drawDeception(tnow));
+listen(['dc-fid-bits','dc-cnt-m','dc-cnt-lag','dc-rv-g','dc-dis-kp','dc-dis-kg','dc-dis-adder','dc-des-bits','dc-des-a','dc-des-fs','dc-des-word','dc-des-nft'],()=>drawDeception(tnow));
+listen(['dc-iq-amp','dc-iq-ph','dc-iq-iso'],()=>drawDeception(tnow));
+{const _dp=gid('dc-dis-preset'); if(_dp) _dp.addEventListener('change',()=>drawDeception(tnow));}
 gid('dc-rate').addEventListener('input',()=>{gid('dc-ratev').textContent=gid('dc-rate').value;drawDeception(tnow);});
 gid('dc-nf').addEventListener('input',()=>{gid('dc-nfv').textContent=gid('dc-nf').value;drawDeception(tnow);});
 gid('dc-js').addEventListener('input',()=>{gid('dc-jsv').textContent=gid('dc-js').value;drawDeception(tnow);});
@@ -2653,6 +2725,8 @@ listen(['st-rcs','st-asp','st-pi','st-b0','st-b1','st-b2','st-b3','st-b4'],drawS
 document.querySelectorAll('#sptabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#sptabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');spMode=b.dataset.p;drawSP();});
 segWire('sp-order',()=>drawSP()); segWire('sp-clut',()=>drawSP());
 listen(['sp-tau','sp-bw','sp-sep','sp-prf','sp-f','sp-v','sp-pfa','sp-snr','sp-jam','sp-shape'],drawSP);
+segWire('sp-stap-jam',()=>drawSP()); segWire('sp-stap-view',()=>drawSP());
+listen(['sp-stap-n','sp-stap-m','sp-stap-prf','sp-stap-vp','sp-stap-cnr','sp-stap-az','sp-stap-vt','sp-stap-jaz','sp-stap-jnr'],drawSP);
 // range-height
 fillSelect(gid('rhi-radar'),RADARS,'gen_acq_s');
 gid('rhi-radar').addEventListener('change',()=>{rhiRange=null;drawRHI(tnow);});
@@ -3135,6 +3209,495 @@ function drawCAF(){
   gid('el-table').innerHTML='';
   gid('el-note').innerHTML='<b>Cross-ambiguity function (CAF).</b> <span class="eq">χ(ν,τ) = ∫ s₁(t) s₂*(t+τ) e^{-jνt} dt</span>; the peak gives the joint TDOA/FDOA estimate. <b>Delay resolution ≈ 1/bandwidth</b> (drop the signal-bandwidth slider and the peak smears horizontally) and <b>Doppler resolution ≈ 1/dwell-time</b> (shorten the dwell and it smears vertically). Lowering SNR raises the noise floor until the true peak is lost — detection needs enough time·bandwidth·SNR product. This is how two-ship passive geolocation actually measures TDOA and FDOA. O&rsquo;Donoughue Ch.&nbsp;13.4.2.';
   gid('el-explain').innerHTML='';
+}
+
+/* ===================== STAP  (Ward & Kogon, MIT LL tutorial) =====================
+   Space-time adaptive processing folded into the Signal-Processing tab.
+   ULA, d = lambda/2, side-looking. Normalized coords: spatial freq psi=(d/lam)sin(az)
+   in [-.5,.5]; normalized Doppler omega=f/PRF in [-.5,.5]. Clutter ridge omega=beta*psi,
+   Brennan slope beta = 2*vp*Tr/d. Optimum weights w = R^-1 v. ================== */
+const STAP_LAM=2/3;   // 450 MHz canonical UHF GMTI (tutorial). d = lam/2.
+function stapParams(){
+  const N=+gid("sp-stap-n").value, M=+gid("sp-stap-m").value, prf=+gid("sp-stap-prf").value,
+        vp=+gid("sp-stap-vp").value, cnr=+gid("sp-stap-cnr").value, az=+gid("sp-stap-az").value,
+        vt=+gid("sp-stap-vt").value, jam=segOn("sp-stap-jam")==="on",
+        jaz=+gid("sp-stap-jaz").value, jnr=+gid("sp-stap-jnr").value;
+  gid("sp-stap-nv").textContent=N; gid("sp-stap-mv").textContent=M; gid("sp-stap-prfv").textContent=prf;
+  gid("sp-stap-vpv").textContent=vp; gid("sp-stap-cnrv").textContent=cnr; gid("sp-stap-azv").textContent=az;
+  gid("sp-stap-vtv").textContent=vt; gid("sp-stap-jazv").textContent=jaz; gid("sp-stap-jnrv").textContent=jnr;
+  const lam=STAP_LAM, d=lam/2, Tr=1/prf;
+  const beta=2*vp*Tr/d;
+  const psit=0.5*Math.sin(az*D2R), omt=2*vt/(lam*prf), psij=0.5*Math.sin(jaz*D2R);
+  return {N,M,prf,vp,cnr,az,vt,jam,jaz,jnr,lam,d,Tr,beta,psit,omt,psij};
+}
+function dirich(x,K){ const s=Math.sin(Math.PI*x); if(Math.abs(s)<1e-12) return K; return Math.abs(Math.sin(Math.PI*x*K)/s); }
+function dirichC(x,K){ const s=Math.sin(Math.PI*x); let mag; if(Math.abs(s)<1e-12) mag=K; else mag=Math.sin(Math.PI*x*K)/s; const ph=Math.PI*x*(K-1); return {re:mag*Math.cos(ph), im:mag*Math.sin(ph)}; }
+function stapPatches(P,Np){
+  const arr=[]; let tot=0;
+  for(let k=0;k<Np;k++){ const sinphi=-1+2*(k+0.5)/Np; const psi=0.5*sinphi; let om=P.beta*psi; om=om-Math.round(om);
+    const dn=dirich(psi-P.psit,P.N)/P.N, g=dn*dn; tot+=g; arr.push({psi,om,g}); }
+  const cnrlin=Math.pow(10,P.cnr/10); for(const p of arr){ p.p=cnrlin*p.g/tot; }
+  return arr;
+}
+function stapSteer(psi,om,N,M){ const NM=N*M, vr=new Float64Array(NM), vi=new Float64Array(NM);
+  for(let m=0;m<M;m++){ const pm=TAU*om*m; for(let n=0;n<N;n++){ const ph=pm+TAU*psi*n, idx=m*N+n; vr[idx]=Math.cos(ph); vi[idx]=Math.sin(ph);} } return {vr,vi}; }
+function stapBuildR(P,patches){
+  const {N,M,jam,psij,jnr}=P, NM=N*M;
+  const Rre=Array.from({length:NM},()=>new Float64Array(NM)), Rim=Array.from({length:NM},()=>new Float64Array(NM));
+  for(let i=0;i<NM;i++) Rre[i][i]=1;               // white noise, sigma^2 = 1
+  const vr=new Float64Array(NM), vi=new Float64Array(NM);
+  for(const pt of patches){ if(!pt.p) continue;
+    for(let m=0;m<M;m++){ const pm=TAU*pt.om*m; for(let n=0;n<N;n++){ const ph=pm+TAU*pt.psi*n, idx=m*N+n; vr[idx]=Math.cos(ph); vi[idx]=Math.sin(ph);} }
+    const p=pt.p;
+    for(let i=0;i<NM;i++){ const ar=vr[i], ai=vi[i]; const Ri=Rre[i], Ii=Rim[i];
+      for(let j=0;j<NM;j++){ Ri[j]+=p*(ar*vr[j]+ai*vi[j]); Ii[j]+=p*(ai*vr[j]-ar*vi[j]); } } }
+  if(jam){ const pj=Math.pow(10,jnr/10);
+    for(let m=0;m<M;m++)for(let n1=0;n1<N;n1++)for(let n2=0;n2<N;n2++){ const ph=TAU*psij*(n1-n2), i=m*N+n1, j=m*N+n2; Rre[i][j]+=pj*Math.cos(ph); Rim[i][j]+=pj*Math.sin(ph); } }
+  return {Rre,Rim,NM};
+}
+function cholFactor(Rre,Rim){ const n=Rre.length;
+  const Lr=Array.from({length:n},()=>new Float64Array(n)), Li=Array.from({length:n},()=>new Float64Array(n));
+  for(let j=0;j<n;j++){ let sum=Rre[j][j];
+    for(let k=0;k<j;k++) sum-=Lr[j][k]*Lr[j][k]+Li[j][k]*Li[j][k];
+    if(sum<1e-9) sum=1e-9; const Ljj=Math.sqrt(sum); Lr[j][j]=Ljj;
+    for(let i=j+1;i<n;i++){ let sr=Rre[i][j], si=Rim[i][j];
+      for(let k=0;k<j;k++){ sr-=Lr[i][k]*Lr[j][k]+Li[i][k]*Li[j][k]; si-=Li[i][k]*Lr[j][k]-Lr[i][k]*Li[j][k]; }
+      Lr[i][j]=sr/Ljj; Li[i][j]=si/Ljj; } }
+  return {Lr,Li,n}; }
+function cholSolveL(F,bre,bim){ const {Lr,Li,n}=F;
+  const yr=new Float64Array(n), yi=new Float64Array(n);
+  for(let i=0;i<n;i++){ let sr=bre[i], si=bim[i];
+    for(let k=0;k<i;k++){ sr-=Lr[i][k]*yr[k]-Li[i][k]*yi[k]; si-=Lr[i][k]*yi[k]+Li[i][k]*yr[k]; }
+    const d=Lr[i][i]; yr[i]=sr/d; yi[i]=si/d; }
+  const xr=new Float64Array(n), xi=new Float64Array(n);
+  for(let i=n-1;i>=0;i--){ let sr=yr[i], si=yi[i];
+    for(let k=i+1;k<n;k++){ sr-=Lr[k][i]*xr[k]+Li[k][i]*xi[k]; si-=Lr[k][i]*xi[k]-Li[k][i]*xr[k]; }
+    const d=Lr[i][i]; xr[i]=sr/d; xi[i]=si/d; }
+  return {xr,xi}; }
+function symEigVals(S){ const n=S.length;
+  for(let sweep=0;sweep<24;sweep++){ let off=0;
+    for(let p=0;p<n;p++)for(let q=p+1;q<n;q++) off+=S[p][q]*S[p][q];
+    if(off<1e-14) break;
+    for(let p=0;p<n;p++)for(let q=p+1;q<n;q++){ const apq=S[p][q]; if(Math.abs(apq)<1e-13) continue;
+      const app=S[p][p], aqq=S[q][q]; const phi=0.5*Math.atan2(2*apq,aqq-app), c=Math.cos(phi), s=Math.sin(phi);
+      for(let k=0;k<n;k++){ const skp=S[k][p], skq=S[k][q]; S[k][p]=c*skp-s*skq; S[k][q]=s*skp+c*skq; }
+      for(let k=0;k<n;k++){ const spk=S[p][k], sqk=S[q][k]; S[p][k]=c*spk-s*sqk; S[q][k]=s*spk+c*sqk; } } }
+  const ev=[]; for(let i=0;i<n;i++) ev.push(S[i][i]); return ev; }
+function stapMarkers(ctx,gx,gy,P,ridge){
+  if(ridge){ ctx.strokeStyle=css("--muted"); ctx.globalAlpha=0.7; ctx.lineWidth=1.2; ctx.setLineDash([4,4]);
+    for(let br=-2;br<=2;br++){ ctx.beginPath(); let started=false;
+      for(let psi=-0.5;psi<=0.5;psi+=0.01){ let om=P.beta*psi+br; if(om<-0.5||om>0.5)continue; const X=gx(psi),Y=gy(om); started?ctx.lineTo(X,Y):ctx.moveTo(X,Y); started=true; } ctx.stroke(); }
+    ctx.setLineDash([]); ctx.globalAlpha=1; }
+}
+function drawSTAPmap(P){
+  const {N,M,psit,omt,psij,jam,beta}=P, NM=N*M;
+  const view=segOn("sp-stap-view")||"int";
+  const patches=stapPatches(P,Math.max(90,2*NM));
+  let w=null, wref=1;
+  if(view==="adapt"){ const R=stapBuildR(P,patches); const F=cholFactor(R.Rre,R.Rim);
+    const vt=stapSteer(psit,omt,N,M); const sol=cholSolveL(F,vt.vr,vt.vi); w={wr:sol.xr,wi:sol.xi};
+    let rr=0; for(let i=0;i<NM;i++) rr+=w.wr[i]*vt.vr[i]+w.wi[i]*vt.vi[i]; wref=rr>1e-12?rr:1; }
+  const {c,ctx,w:cw,h:ch}=setupCanvas("c-sp",0.6); ctx.clearRect(0,0,cw,ch);
+  const {gx,gy}=axes(ctx,cw,ch,-0.5,0.5,-0.5,0.5,"Spatial freq  ψ   (← sin az →)","Norm. Doppler  ω = f / PRF",[-0.5,-0.25,0,0.25,0.5],[-0.5,-0.25,0,0.25,0.5]);
+  const GX=76, GY=58, cwid=(gx(0.5)-gx(-0.5))/GX+1, chgt=(gy(-0.5)-gy(0.5))/GY+1;
+  for(let iy=0;iy<GY;iy++){ const om=-0.5+(iy+0.5)/GY;
+    for(let ix=0;ix<GX;ix++){ const psi=-0.5+(ix+0.5)/GX; let t;
+      if(view==="int"){ let cl=0; for(const pt of patches){ const dn=dirich(psi-pt.psi,N), dm=dirich(om-pt.om,M); cl+=pt.p*dn*dn*dm*dm; }
+        let jm=0; if(jam){ const dn=dirich(psi-psij,N); jm=M*Math.pow(10,P.jnr/10)*dn*dn; }
+        let dB=10*Math.log10((cl+jm)/NM+1); t=Math.max(0,Math.min(50,dB))/50; }
+      else if(view==="conv"){ const dn=dirich(psi-psit,N), dm=dirich(om-omt,M); const g=dn*dm/NM; let dB=20*Math.log10(Math.max(g,1e-4)); t=(Math.max(-40,Math.min(0,dB))+40)/40; }
+      else { let sr=0,si=0; for(let m=0;m<M;m++){ const pm=TAU*om*m; for(let n=0;n<N;n++){ const ph=pm+TAU*psi*n, idx=m*N+n, cr=Math.cos(ph), ci=Math.sin(ph); sr+=w.wr[idx]*cr+w.wi[idx]*ci; si+=w.wr[idx]*ci-w.wi[idx]*cr; } }
+        const norm=(sr*sr+si*si)/(wref*wref); let dB=10*Math.log10(Math.max(norm,1e-6)); t=(Math.max(-50,Math.min(0,dB))+50)/50; }
+      ctx.fillStyle=cafHeat(t); ctx.fillRect(gx(psi)-cwid/2, gy(om)-chgt/2, cwid, chgt);
+    } }
+  stapMarkers(ctx,gx,gy,P,true);
+  if(jam){ ctx.strokeStyle=css("--jam"); ctx.lineWidth=1.6; ctx.setLineDash([5,3]); ctx.beginPath(); ctx.moveTo(gx(psij),gy(-0.5)); ctx.lineTo(gx(psij),gy(0.5)); ctx.stroke(); ctx.setLineDash([]); }
+  const omw=omt-Math.round(omt);
+  ctx.strokeStyle="#fff"; ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(gx(psit),gy(omw),7,0,TAU); ctx.stroke();
+  ctx.fillStyle="#fff"; ctx.font="10px system-ui"; ctx.textAlign="center"; ctx.textBaseline="bottom"; ctx.fillText("target",gx(psit),gy(omw)-9);
+  watermark(ctx,cw,ch);
+  const rank=Math.min(NM,Math.round(N+(M-1)*beta));
+  const vmbc=(beta*psit)*P.lam*P.prf/2;
+  const vlabel={int:"Interference power",adapt:"Adapted response  |wᴴv|²",conv:"Conventional  |vₜᴴv|²"}[view];
+  gid("sp-cap").textContent="Angle-Doppler plane. Ground clutter falls on the diagonal ridge ω=βψ; a barrage jammer is a vertical line (all Doppler, one angle). Optimum STAP w=R⁻¹v carves nulls along both while keeping the target mainlobe.";
+  gid("sp-readouts").innerHTML=
+    '<div class="stat"><div class="k">Showing</div><div class="v" style="font-size:14px">'+vlabel+'</div></div>'+
+    '<div class="stat"><div class="k">Brennan slope β</div><div class="v">'+beta.toFixed(2)+'</div></div>'+
+    '<div class="stat"><div class="k">Clutter rank N+(M−1)β</div><div class="v">'+rank+' <small>/ '+NM+'</small></div></div>'+
+    '<div class="stat"><div class="k">Mainbeam-clutter vel</div><div class="v">'+vmbc.toFixed(0)+' <small>m/s</small></div></div>';
+  gid("sp-note").innerHTML="<b>Space-time adaptive processing.</b> Platform motion spreads ground clutter across Doppler in proportion to angle — the <b>clutter ridge</b> ω=βψ. A Doppler-only or angle-only filter cannot cancel it without also blinding the matching angles/speeds; only a joint 2-D (space-time) null follows the ridge. Switch <b>Adapted</b> vs <b>Conventional</b>: adaptation digs a trench along the ridge (and a vertical null on the jammer) while the mainlobe stays on the target. For β&gt;1 the ridge aliases into parallel diagonals — extra blind speeds. Ward &amp; Kogon (MIT LL), <i>STAP for AMTI/GMTI</i>.";
+  gid("sp-explain").innerHTML="";
+}
+function drawSTAPsinr(P){
+  const {N,M,psit,jam,beta,lam,prf}=P, NM=N*M;
+  const patches=stapPatches(P,Math.max(90,2*NM));
+  const R=stapBuildR(P,patches); const F=cholFactor(R.Rre,R.Rim);
+  // conventional (Doppler-only) reference = Hamming-tapered sum beam + Doppler filter (no spatial adaptivity)
+  const wN=new Float64Array(N); for(let n=0;n<N;n++) wN[n]=N>1?0.54-0.46*Math.cos(TAU*n/(N-1)):1;
+  const wM=new Float64Array(M); for(let m=0;m<M;m++) wM[m]=M>1?0.54-0.46*Math.cos(TAU*m/(M-1)):1;
+  let sN2=0; for(let n=0;n<N;n++) sN2+=wN[n]*wN[n]; let sM2=0; for(let m=0;m<M;m++) sM2+=wM[m]*wM[m];
+  const wnorm=sN2*sM2;
+  const tapP=(w,x,K)=>{ let cr=0,ci=0; for(let k=0;k<K;k++){ const ph=TAU*x*k; cr+=w[k]*Math.cos(ph); ci+=w[k]*Math.sin(ph);} return cr*cr+ci*ci; };
+  const aN=patches.map(pt=>tapP(wN,pt.psi-psit,N)); const aNj=jam?tapP(wN,P.psij-psit,N):0;
+  const vspan=1.15*lam*prf/4;   // a little past the first blind speed edge
+  const NPT=141; const vs=[], Lopt=[], Lconv=[];
+  for(let i=0;i<NPT;i++){ const v=-vspan+2*vspan*i/(NPT-1); const om=2*v/(lam*prf);
+    const vt=stapSteer(psit,om,N,M); const sol=cholSolveL(F,vt.vr,vt.vi);
+    let q=0; for(let k=0;k<NM;k++) q+=sol.xr[k]*vt.vr[k]+sol.xi[k]*vt.vi[k];   // v^H R^-1 v  (real)
+    let denom=wnorm; for(let k=0;k<patches.length;k++){ denom+=patches[k].p*aN[k]*tapP(wM,patches[k].om-om,M); }
+    if(jam){ denom+=Math.pow(10,P.jnr/10)*aNj*sM2; }
+    vs.push(v); Lopt.push(10*Math.log10(Math.max(q,1e-9)/NM)); Lconv.push(10*Math.log10(wnorm/Math.max(denom,1e-12))); }
+  const {c,ctx,w,h}=setupCanvas("c-sp",0.58); ctx.clearRect(0,0,w,h);
+  const yMin=-30,yMax=3;
+  const {gx,gy}=axes(ctx,w,h,-vspan,vspan,yMin,yMax,"Target radial velocity (m/s)","SINR loss (dB)",niceTicks(-vspan,vspan,6).map(v=>Math.round(v)),niceTicks(yMin,yMax,6).map(v=>Math.round(v)));
+  const plot=(arr,col,dash)=>{ ctx.strokeStyle=col; ctx.lineWidth=2; ctx.setLineDash(dash?[6,4]:[]); ctx.beginPath();
+    for(let i=0;i<NPT;i++){ const X=gx(vs[i]), Y=gy(Math.max(yMin,Math.min(yMax,arr[i]))); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); } ctx.stroke(); ctx.setLineDash([]); };
+  plot(Lconv,css("--jam"),true); plot(Lopt,css("--s1"),false);
+  // mainbeam clutter velocity marker
+  const vmbc=(beta*psit)*lam*prf/2;
+  ctx.strokeStyle=css("--muted"); ctx.setLineDash([3,3]); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(gx(vmbc),gy(yMax)); ctx.lineTo(gx(vmbc),gy(yMin)); ctx.stroke(); ctx.setLineDash([]);
+  // MDV: smallest |v-vmbc| where Lopt exceeds -5 dB
+  let mdv=null; for(let i=0;i<NPT;i++){ if(Lopt[i]>-5){ const dv=Math.abs(vs[i]-vmbc); if(mdv===null||dv<mdv) mdv=dv; } }
+  ctx.fillStyle=css("--s1"); ctx.font="11px system-ui"; ctx.textAlign="left"; ctx.textBaseline="top"; ctx.fillText("Optimum STAP",gx(-vspan)+8,gy(yMax)+4);
+  ctx.fillStyle=css("--jam"); ctx.fillText("Doppler-only (nonadaptive)",gx(-vspan)+8,gy(yMax)+18);
+  watermark(ctx,w,h);
+  const rank=Math.min(NM,Math.round(N+(M-1)*beta));
+  gid("sp-cap").textContent="SINR loss vs target radial velocity: the deep notch at mainbeam-clutter Doppler is where a target is buried in clutter. Its width sets the minimum detectable velocity (MDV).";
+  gid("sp-readouts").innerHTML=
+    '<div class="stat"><div class="k">MDV (5 dB loss)</div><div class="v">'+(mdv!=null?("±"+mdv.toFixed(0)):"—")+' <small>m/s</small></div></div>'+
+    '<div class="stat"><div class="k">Mainbeam-clutter vel</div><div class="v">'+vmbc.toFixed(0)+' <small>m/s</small></div></div>'+
+    '<div class="stat"><div class="k">Brennan slope β</div><div class="v">'+beta.toFixed(2)+'</div></div>'+
+    '<div class="stat"><div class="k">Clutter rank</div><div class="v">'+rank+' <small>/ '+NM+' DOF</small></div></div>';
+  gid("sp-note").innerHTML="<b>SINR loss</b> = ξ(ψ,ω)/ξ₀, the ratio of achieved SINR to the clutter-free matched-filter SINR (ξ₀ = ξₜ·MN). <b>0 dB</b> means clutter costs nothing; the deep notch is where the target Doppler sits on the clutter ridge. <b>Optimum STAP</b> (blue) holds a narrow notch — low MDV — because it nulls only the offending angle-Doppler cell. <b>Doppler-only</b> (red) must notch the whole mainbeam-clutter band and still leaks sidelobe clutter, so its MDV is far worse. More antenna elements / pulses (space-time DOF) narrow the notch. Ward &amp; Kogon (MIT LL), Ch. “Optimum STAP: SINR metrics.”";
+  gid("sp-explain").innerHTML="";
+}
+function drawSTAPeig(P){
+  const {N,M,beta}=P, NM=N*M;
+  const rank=Math.min(NM,Math.round(N+(M-1)*beta));
+  const Np=Math.min(96,Math.max(rank+22,rank+22));
+  const patches=stapPatches(P,Np);
+  const Gr=Array.from({length:Np},()=>new Float64Array(Np)), Gi=Array.from({length:Np},()=>new Float64Array(Np));
+  for(let k=0;k<Np;k++)for(let l=0;l<Np;l++){ const a=dirichC(patches[l].psi-patches[k].psi,N), b=dirichC(patches[l].om-patches[k].om,M);
+    const re=a.re*b.re-a.im*b.im, im=a.re*b.im+a.im*b.re, s=Math.sqrt(patches[k].p*patches[l].p); Gr[k][l]=s*re; Gi[k][l]=s*im; }
+  const n2=2*Np, S=Array.from({length:n2},()=>new Float64Array(n2));
+  for(let i=0;i<Np;i++)for(let j=0;j<Np;j++){ S[i][j]=Gr[i][j]; S[i+Np][j+Np]=Gr[i][j]; S[i][j+Np]=-Gi[i][j]; S[i+Np][j]=Gi[i][j]; }
+  const ev=symEigVals(S); ev.sort((a,b)=>b-a);
+  const lam=[]; for(let i=0;i<Np;i++) lam.push(Math.max(0,ev[2*i]));
+  const {c,ctx,w,h}=setupCanvas("c-sp",0.58); ctx.clearRect(0,0,w,h);
+  const xMax=NM, yMin=-20, yMax=10*Math.log10((lam[0]||1)+1)+6;
+  const {gx,gy}=axes(ctx,w,h,0,xMax,yMin,yMax,"Eigenvalue index","Relative power (dB)",niceTicks(0,xMax,6).map(v=>Math.round(v)),niceTicks(yMin,yMax,6).map(v=>Math.round(v)));
+  // noise floor
+  ctx.strokeStyle=css("--muted"); ctx.setLineDash([5,4]); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(gx(0),gy(0)); ctx.lineTo(gx(xMax),gy(0)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=css("--muted"); ctx.font="10px system-ui"; ctx.textAlign="left"; ctx.textBaseline="bottom"; ctx.fillText("noise floor",gx(xMax*0.6),gy(0)-3);
+  // rank marker
+  ctx.strokeStyle=css("--jam"); ctx.setLineDash([4,3]); ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(gx(rank),gy(yMin)); ctx.lineTo(gx(rank),gy(yMax)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=css("--jam"); ctx.textAlign="center"; ctx.textBaseline="top"; ctx.fillText("rank = N+(M−1)β = "+rank, gx(rank), gy(yMax)+2);
+  // eigenvalues of R = lambda(Rc)+1
+  ctx.strokeStyle=css("--s1"); ctx.lineWidth=2; ctx.beginPath();
+  for(let i=0;i<NM;i++){ const val=(i<Np?lam[i]:0)+1; const Y=gy(Math.max(yMin,10*Math.log10(val))); const X=gx(i+1); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); } ctx.stroke();
+  ctx.fillStyle=css("--s1"); for(let i=0;i<NM;i++){ const val=(i<Np?lam[i]:0)+1; const dB=10*Math.log10(val); if(dB<yMin)continue; ctx.beginPath(); ctx.arc(gx(i+1),gy(dB),2.4,0,TAU); ctx.fill(); }
+  watermark(ctx,w,h);
+  gid("sp-cap").textContent="Clutter eigenspectrum. The covariance R_c has only a handful of large eigenvalues — the clutter occupies a low-dimensional subspace — then drops off a cliff to the noise floor. Brennan’s rule predicts exactly where.";
+  gid("sp-readouts").innerHTML=
+    '<div class="stat"><div class="k">Brennan rank</div><div class="v">'+rank+' <small>/ '+NM+'</small></div></div>'+
+    '<div class="stat"><div class="k">Brennan slope β</div><div class="v">'+beta.toFixed(2)+'</div></div>'+
+    '<div class="stat"><div class="k">Peak eigenvalue</div><div class="v">'+(10*Math.log10((lam[0]||1)+1)).toFixed(0)+' <small>dB</small></div></div>'+
+    '<div class="stat"><div class="k">Space-time DOF</div><div class="v">'+NM+'</div></div>';
+  gid("sp-note").innerHTML="<b>Brennan’s rule:</b> rank(R_c) ≈ <b>N + (M−1)β</b>. The clutter ridge, though it spans the whole angle-Doppler plane, lives in a subspace far smaller than the MN degrees of freedom — so only ~rank adaptive DOF are spent cancelling it, leaving the rest for the target and for fast convergence. Raise the platform velocity or lower the PRF to increase β: the eigenvalue cliff (dashed) marches right as the ridge tilts steeper and occupies more DOF. This is why <b>reduced-dimension STAP</b> works — you only need to null the clutter subspace. Ward &amp; Kogon (MIT LL), “Clutter eigenvalue spectra / Brennan’s rule.”";
+  gid("sp-explain").innerHTML="";
+}
+function drawSTAPdpca(P){
+  const {N,M,beta,psit,omt,vp,Tr,d,prf,lam}=P;
+  const {c,ctx,w,h}=setupCanvas("c-sp",0.6); ctx.clearRect(0,0,w,h);
+  const {gx,gy}=axes(ctx,w,h,-0.5,0.5,-0.5,0.5,"Spatial freq  ψ   (← sin az →)","Norm. Doppler  ω = f / PRF",[-0.5,-0.25,0,0.25,0.5],[-0.5,-0.25,0,0.25,0.5]);
+  const GX=76, GY=58, cwid=(gx(0.5)-gx(-0.5))/GX+1, chgt=(gy(-0.5)-gy(0.5))/GY+1;
+  for(let iy=0;iy<GY;iy++){ const om=-0.5+(iy+0.5)/GY;
+    for(let ix=0;ix<GX;ix++){ const psi=-0.5+(ix+0.5)/GX; const H=(2-2*Math.cos(TAU*(psi-om)))/4; let dB=10*Math.log10(Math.max(H,1e-5)); const t=(Math.max(-40,Math.min(0,dB))+40)/40; ctx.fillStyle=cafHeat(t); ctx.fillRect(gx(psi)-cwid/2,gy(om)-chgt/2,cwid,chgt); } }
+  // DPCA null diagonal (psi = omega)
+  ctx.strokeStyle="#fff"; ctx.globalAlpha=0.55; ctx.lineWidth=1.2; ctx.setLineDash([2,3]); ctx.beginPath(); ctx.moveTo(gx(-0.5),gy(-0.5)); ctx.lineTo(gx(0.5),gy(0.5)); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+  // actual clutter ridge omega = beta psi (wrapped)
+  stapMarkers(ctx,gx,gy,P,true);
+  const omw=omt-Math.round(omt);
+  ctx.strokeStyle="#fff"; ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(gx(psit),gy(omw),7,0,TAU); ctx.stroke();
+  watermark(ctx,w,h);
+  // residual clutter: DPCA response averaged over clutter patches
+  const patches=stapPatches(P,120); let num=0,den=0;
+  for(const pt of patches){ const H=(2-2*Math.cos(TAU*(pt.psi-pt.om)))/4; num+=pt.p*H; den+=pt.p; }
+  const resid=num/den; const cancel=-10*Math.log10(Math.max(resid,1e-9));
+  const metGood=Math.abs(beta-1)<0.03;
+  gid("sp-cap").textContent="Displaced-Phase-Center Antenna: a nonadaptive two-pulse space-time filter w=[0,1,−1,0]. It nulls the fixed ψ=ω diagonal (white dashes). Clutter is cancelled only where its ridge (βψ, grey) lies on that null — i.e. when β=1.";
+  gid("sp-readouts").innerHTML=
+    '<div class="stat"><div class="k">DPCA condition vₚTᵣ = d/2</div><div class="v" style="color:'+(metGood?"var(--good)":"var(--jam)")+'">'+ (vp*Tr).toFixed(3)+' vs '+(d/2).toFixed(3)+' m</div></div>'+
+    '<div class="stat"><div class="k">Brennan slope β</div><div class="v" style="color:'+(metGood?"var(--good)":"var(--jam)")+'">'+beta.toFixed(2)+(metGood?" ✓":"")+'</div></div>'+
+    '<div class="stat"><div class="k">Clutter cancellation</div><div class="v">'+cancel.toFixed(1)+' <small>dB</small></div></div>'+
+    '<div class="stat"><div class="k">Residual clutter</div><div class="v">'+(10*Math.log10(Math.max(resid,1e-9))).toFixed(1)+' <small>dB</small></div></div>';
+  gid("sp-note").innerHTML="<b>DPCA</b> shifts the receive aperture backward one element-spacing each pulse so two successive pulses share the same phase center in space; subtracting them, y(n)=xₐ(n)−xᶠ(n−1), cancels stationary clutter like a two-pulse MTI but <i>along the whole angle axis at once</i>. This works <b>only</b> when the platform moves exactly half the element spacing per PRI (vₚTᵣ=d/2 ⇔ β=1) so the clutter ridge lands on the fixed ψ=ω null. Change the PRF or platform velocity so β≠1: the ridge peels off the null and clutter leaks. DPCA is cheap and nonadaptive but rigid — it cannot follow intrinsic clutter motion or jamming, which is the motivation for adaptive STAP. Ward &amp; Kogon (MIT LL), “DPCA processing.”";
+  gid("sp-explain").innerHTML="";
+}
+function drawSTAP(){ if(spMode==="stapsinr") return drawSTAPsinr(stapParams()); if(spMode==="stapeig") return drawSTAPeig(stapParams()); if(spMode==="stapdpca") return drawSTAPdpca(stapParams()); return drawSTAPmap(stapParams()); }
+
+/* ===================== DRFM PHYSICS  (Pace, Artech 2022) =====================
+   Finite-bit spurious false targets (Ch 5.10), counter-DRFM pulse agility
+   (Ch 11.1), coordinated RGPO-VGPO with kinematic-consistency EP (Ch 10.7),
+   and the Digital Image Synthesizer structured false target (Ch 10.10). ===== */
+const _drfmAcache={};
+function drfmOptA(n){ if(n<=1) return 1; if(_drfmAcache[n]) return _drfmAcache[n];
+  const K=Math.pow(2,n-1), a0=Math.pow(2,1-n);
+  const F=a=>{ let sc=0,sf=0; for(let k=2;k<=K;k++){ const s=(2*k-1)*a/2; if(s>1)return NaN; const th=Math.asin(s); sc+=Math.cos(th); sf+=(2*k-1)*th;} return a*Math.PI*Math.pow(2,2*n-3)-1-a*sf-sc; };
+  let lo=0.70*a0, hi=0.999*a0, flo=F(lo);
+  for(let it=0;it<80;it++){ const m=0.5*(lo+hi); const fm=F(m); if(isNaN(fm)){hi=m;continue;} if(flo*fm<=0)hi=m; else {lo=m;flo=fm;} }
+  return _drfmAcache[n]=0.5*(lo+hi); }
+function drfmThetas(n){ const K=Math.pow(2,n-1), a=drfmOptA(n), th=[]; for(let k=2;k<=K;k++) th.push(Math.asin(Math.min(1,(2*k-1)*a/2))); return {a,th}; }
+function drfmSpurComb(n, phase){
+  const out=[]; let worst=-999,wm=1,tot=0;
+  if(!phase){                                   // amplitude-sampling staircase (Table 5.5)
+    const {th}=drfmThetas(n); const denom=1+th.reduce((s,t)=>s+Math.cos(t),0);
+    for(let m=3;m<=61;m+=2){ const Sm=th.reduce((s,t)=>s+Math.cos(m*t),0); const r=Math.abs((1+Sm)/(m*denom)); const dB=20*Math.log10(r+1e-12); out.push({m,dB}); if(dB>worst){worst=dB;wm=m;} }
+    for(let m=3;m<=999;m+=2){ const Sm=th.reduce((s,t)=>s+Math.cos(m*t),0); const r=Math.abs((1+Sm)/(m*denom)); tot+=r*r; }
+  } else {                                       // phase-sampling image spurs (eq 10.46/10.47): lines at (Nm+1)f0
+    const N=Math.pow(2,n); const sinc=x=>{ x=Math.PI*x; return Math.abs(x)<1e-9?1:Math.sin(x)/x; }; const f0=Math.abs(sinc(1/N));
+    for(let m=-8;m<=8;m++){ if(m===0)continue; const har=Math.abs(N*m+1); if(har<=1)continue; const r=Math.abs(sinc(m+1/N))/f0; const dB=20*Math.log10(r+1e-12); out.push({m:har,dB}); if(dB>worst){worst=dB;wm=har;} }
+    for(let m=-60;m<=60;m++){ if(m===0)continue; const r=Math.abs(sinc(m+1/N))/f0; tot+=r*r; }
+  }
+  return {out,worst,wm,tot:tot*100};
+}
+const drfmSNR=n=>6.02*n+1.76;
+
+/* ---------------- 1. DRFM FIDELITY: spurious false targets ---------------- */
+function drawDRFMfidelity(){
+  const n=+gid('dc-fid-bits').value, phase=segOn('dc-fid-samp')==='phase';
+  gid('dc-fid-bitsv').textContent=n;
+  const sp=drfmSpurComb(n,phase);
+  const {c,ctx,w,h}=setupCanvas('c-decep',0.56); ctx.clearRect(0,0,w,h);
+  const xMax=phase?Math.max(40,sp.wm+8):51, yMin=-55,yMax=4;
+  const {gx,gy}=axes(ctx,w,h,0,xMax,yMin,yMax,'Harmonic / false-target offset (× f₀)','Relative amplitude (dBc)',niceTicks(0,xMax,6).map(v=>Math.round(v)),niceTicks(yMin,yMax,6).map(v=>Math.round(v)));
+  // fundamental (the real skin return)
+  const stem=(x,dB,col,lw)=>{ const X=gx(x); ctx.strokeStyle=col; ctx.lineWidth=lw||2; ctx.beginPath(); ctx.moveTo(X,gy(yMin)); ctx.lineTo(X,gy(Math.max(yMin,Math.min(yMax,dB)))); ctx.stroke(); ctx.fillStyle=col; ctx.beginPath(); ctx.arc(X,gy(Math.max(yMin,Math.min(yMax,dB))),3,0,TAU); ctx.fill(); };
+  stem(1,0,css('--good'),2.6); ctx.fillStyle=css('--good'); ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.fillText('real target (f₀)',gx(1),gy(0)-6);
+  for(const s of sp.out){ if(s.m>xMax)continue; const isw=s.m===sp.wm; stem(s.m,s.dB,isw?css('--jam'):css('--s1'),isw?2.6:1.8); }
+  // worst-spur callout
+  const wsDB=sp.worst; const wx=gx(sp.wm), wy=gy(Math.max(yMin,wsDB));
+  ctx.fillStyle=css('--jam'); ctx.textBaseline='bottom'; ctx.fillText('worst spur '+wsDB.toFixed(1)+' dB',wx,wy-6);
+  watermark(ctx,w,h);
+  gid('dc-stage').textContent = n+'-bit'; gid('dc-err').innerHTML=sp.worst.toFixed(1)+' <small>dBc</small>';
+  gid('dc-track').innerHTML = sp.worst>-20?'<span style="color:var(--jam)">SPURS VISIBLE</span>':sp.worst>-35?'<span style="color:var(--warn)">MARGINAL</span>':'<span style="color:var(--good)">CLEAN</span>';
+  gid('dc-epstat').textContent='SFDR '+(-sp.worst).toFixed(0)+' dB';
+  gid('dc-cap').textContent=(phase?'Phase-sampling':'Amplitude-sampling')+' DRFM fidelity: quantizing the intercepted waveform to '+n+' bits reradiates a comb of spurious false targets. A counter-DRFM radar can key on this signature to tell a repeater from a real skin return.';
+  gid('dc-explain').innerHTML='<b>DRFM spurious false targets.</b> A DRFM stores the intercepted RF into '+(phase?'2<sup>'+n+'</sup> phase states':'2<sup>'+n+'</sup> amplitude levels')+'. '+(phase?'Phase quantization of the tone throws image lines at (2<sup>'+n+'</sup>·m ± 1)·f₀ with sinc(m+1/N) weights (Pace eq. 10.46).':'With half-wave symmetry only <b>odd harmonics</b> survive; the staircase amplitudes give spur ratios b<sub>m</sub>/b<sub>1</sub> = (1/m)[1+Σcos mθ<sub>k</sub>]/[1+Σcos θ<sub>k</sub>] (Pace eq. 5.101–5.105).')+' Worst spur ≈ <b>9×bits dB</b> down and total spur power falls fast: 1-bit −9.5 dB/23%, 2-bit −18 dB, 3-bit −25.5 dB, 5-bit −46 dB (Table 5.5). Digitizer <b>SNR = 6.02n + 1.76 dB = '+drfmSNR(n).toFixed(1)+' dB</b>. This is why cheap low-bit DRFMs are detectable — and why real systems dither or add clock jitter to smear the spurs. Pace, <i>Developing Digital RF Memories</i>, Ch. 5.10.';
+}
+
+/* ---------------- 2. COUNTER-DRFM: pulse-to-pulse waveform agility -------- */
+function drawCounterDRFM(){
+  const M=+gid('dc-cnt-m').value, agile=segOn('dc-cnt-ag')==='on', lag=+gid('dc-cnt-lag').value;
+  gid('dc-cnt-mv').textContent=M; gid('dc-cnt-lagv').textContent=lag;
+  // deterministic per-pulse phase codes (agility); DRFM replays the pulse from 'lag' PRIs ago
+  const code=k=>{ if(!agile) return 0; const s=Math.sin(k*12.9898)*43758.5453; return 2*Math.PI*(s-Math.floor(s)); };
+  const ft=0.18, ff=-0.12;                       // real & false normalized Doppler
+  // slow-time samples -> Doppler spectra (real coherent; false carries code mismatch)
+  const doppMag=(f,isFalse)=>{ const Nb=64, mag=new Float64Array(Nb);
+    const sr=new Float64Array(M), si=new Float64Array(M);
+    for(let nn=0;nn<M;nn++){ let ph=2*Math.PI*f*nn; if(isFalse) ph+=code(nn-lag)-code(nn); sr[nn]=Math.cos(ph); si[nn]=Math.sin(ph); }
+    for(let b=0;b<Nb;b++){ const fb=-0.5+b/Nb; let cr=0,ci=0; for(let nn=0;nn<M;nn++){ const a=-2*Math.PI*fb*nn; cr+=sr[nn]*Math.cos(a)-si[nn]*Math.sin(a); ci+=sr[nn]*Math.sin(a)+si[nn]*Math.cos(a);} mag[b]=Math.hypot(cr,ci); } return mag; };
+  const real=doppMag(ft,false), fals=doppMag(ff,true);
+  const peak=v=>{ let mx=0; for(const x of v) mx=Math.max(mx,x); return mx; };
+  const realPk=peak(real), falsPk=peak(fals);
+  const {c,ctx,w,h}=setupCanvas('c-decep',0.56); ctx.clearRect(0,0,w,h);
+  const yMin=-3,yMax=1.05;
+  const {gx,gy}=axes(ctx,w,h,-0.5,0.5,yMin,yMax,'Doppler  f / PRF','Normalized coherent output (log)',[-0.5,-0.25,0,0.25,0.5],[-3,-2,-1,0,1].map(v=>v));
+  const plot=(v,col,dash)=>{ ctx.strokeStyle=col; ctx.lineWidth=2; ctx.setLineDash(dash?[6,4]:[]); ctx.beginPath(); for(let b=0;b<v.length;b++){ const fb=-0.5+b/v.length; const val=Math.log10(Math.max(v[b]/M,1e-3)); const X=gx(fb),Y=gy(Math.max(yMin,val)); b?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.setLineDash([]); };
+  plot(real,css('--good')); plot(fals,css('--jam'),true);
+  ctx.fillStyle=css('--good'); ctx.font='11px system-ui'; ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText('real target',gx(-0.5)+8,gy(yMax)+4);
+  ctx.fillStyle=css('--jam'); ctx.fillText('DRFM false target',gx(-0.5)+8,gy(yMax)+18);
+  watermark(ctx,w,h);
+  const loss=20*Math.log10(realPk/Math.max(falsPk,1e-6));
+  gid('dc-stage').textContent = agile?'Waveform-agile':'Fixed waveform';
+  gid('dc-err').innerHTML=(agile?loss.toFixed(1):'0.0')+' <small>dB loss</small>';
+  gid('dc-track').innerHTML = agile?'<span style="color:var(--good)">FALSE SUPPRESSED</span>':'<span style="color:var(--jam)">FALSE PASSES</span>';
+  gid('dc-epstat').textContent= agile?'Pulse-to-pulse agility':'—';
+  gid('dc-cap').textContent='Counter-DRFM by waveform agility: the radar changes its pulse each PRI. A repeater DRFM can only replay a pulse it already stored ('+lag+' PRI late), so its replay no longer matches the current matched filter.';
+  gid('dc-explain').innerHTML='<b>Pulse-to-pulse waveform agility (Pace Ch. 11.1).</b> A coherent target return carries the <i>current</i> pulse’s code, so it compresses in range and integrates coherently in Doppler to the full <b>M = '+M+'</b> gain (sharp green peak). A DRFM repeater re-radiates a <b>stored earlier pulse</b> — its inter-pulse phase is scrambled by Δc = c(n−'+lag+') − c(n), so the false target smears across Doppler and loses ~10·log₁₀(M) of coherent integration ('+(agile?loss.toFixed(1)+' dB here':'0 dB when the waveform is fixed')+'). Perturbing the LFM chirp phase (or flipping up/down chirp) each pulse is the classic counter-DRFM: it costs the jammer the processing gain it was stealing. Turn agility off and the replay matches perfectly — the false target is indistinguishable.';
+}
+
+/* ---------------- 3. COORDINATED RGPO-VGPO + kinematic-consistency EP ----- */
+function drawCoordRVGPO(t){
+  const mode=segOn('dc-rv-mode'), gee=+gid('dc-rv-g').value, ep=segOn('dc-ep')==='on';
+  gid('dc-rv-gv').textContent=gee;
+  const period=8000, tt=(t%period)/period;         // 0..1 pull-off cycle
+  const acc=gee*9.81;                               // m/s^2
+  const lam=0.03;                                   // 10 GHz
+  const Ttot=6, tc=tt*Ttot;                         // seconds into pull-off
+  // range walk (RGPO) and doppler walk (VGPO); coordinated keeps them consistent
+  const doR = mode==='rgpo'||mode==='coord';
+  const doV = mode==='vgpo'||mode==='coord';
+  const R0=15, Rpo=0.5*acc*tc*tc;                    // m (pull-off range)
+  const Rf = R0 + (doR? Rpo/1000*3 : 0);             // km (scaled for display)
+  const vTrue=0;
+  const vRangeTracker = doR? acc*tc : 0;             // m/s inferred from range rate
+  const vDopTracker   = doV? acc*tc : 0;             // m/s inferred from doppler rate
+  const {c,ctx,w,h}=setupCanvas('c-decep',0.58); ctx.clearRect(0,0,w,h);
+  const xMin=10,xMax=32, yMin=-40,yMax=200;
+  const {gx,gy}=axes(ctx,w,h,xMin,xMax,yMin,yMax,'Range (km)','Radial velocity (m/s)',niceTicks(xMin,xMax,6).map(v=>Math.round(v)),niceTicks(yMin,yMax,6).map(v=>Math.round(v)));
+  // true target
+  ctx.fillStyle=css('--good'); ctx.beginPath(); ctx.arc(gx(R0),gy(vTrue),6,0,TAU); ctx.fill();
+  ctx.fillStyle=css('--ink2'); ctx.font='11px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.fillText('true target',gx(R0),gy(vTrue)-9);
+  // false target position in range-velocity space
+  const fx=gx(Math.min(xMax,Rf)), fy=gy(Math.min(yMax, doV? acc*tc : vTrue));
+  // trail
+  ctx.strokeStyle=css('--jam'); ctx.globalAlpha=0.5; ctx.lineWidth=1.5; ctx.setLineDash([4,3]); ctx.beginPath();
+  for(let s=0;s<=20;s++){ const ts=tc*s/20; const rr=R0+(doR?0.5*acc*ts*ts/1000*3:0); const vv=doV?acc*ts:vTrue; const X=gx(Math.min(xMax,rr)),Y=gy(Math.min(yMax,vv)); s?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+  ctx.fillStyle=css('--jam'); ctx.beginPath(); ctx.arc(fx,fy,6,0,TAU); ctx.fill();
+  ctx.fillStyle=css('--jam'); ctx.fillText('DRFM false',fx,fy-9);
+  // consistency line: a true target sits on velocity = d(range)/dt line; show the "kinematically consistent" locus
+  watermark(ctx,w,h);
+  // EP consistency check
+  const dv=Math.abs(vRangeTracker-vDopTracker);
+  const consistent = dv < 6 || mode==='coord';
+  const detected = ep && !consistent;
+  gid('dc-stage').textContent = mode==='coord'?'Coordinated RVGPO':mode==='rgpo'?'RGPO only':'VGPO only';
+  gid('dc-err').innerHTML=(doR?('ΔR '+(Rf-R0).toFixed(1)+'km'):'')+(doV?(' Δf '+(2*acc*tc/lam).toFixed(0)+'Hz'):'')||'—';
+  gid('dc-track').innerHTML = detected?'<span style="color:var(--good)">DECEPTION FLAGGED</span>':'<span style="color:var(--jam)">TRACKING FALSE</span>';
+  gid('dc-epstat').innerHTML= ep? (consistent?'<span style="color:var(--jam)">consistent ✓</span>':'<span style="color:var(--good)">Ṙ mismatch</span>') : '—';
+  gid('dc-cap').textContent='Coordinated range-velocity gate pull-off (Pace Ch. 10.7.6): pulling range and Doppler together so the false target’s range-rate matches its Doppler — it moves through range-Doppler space like a real maneuvering target.';
+  gid('dc-explain').innerHTML='<b>Range/Doppler consistency is the EP handle.</b> A tracker measures range-rate two ways — from the <b>range tracker</b> (Ṙ) and from the <b>Doppler tracker</b> (−f<sub>d</sub>λ/2). '+
+    (mode==='rgpo'? 'Pure <b>RGPO</b> walks range but leaves Doppler at the true value → the two disagree (Ṙ<sub>range</sub>='+vRangeTracker.toFixed(0)+' vs Ṙ<sub>doppler</sub>='+vDopTracker.toFixed(0)+' m/s) → '+(ep?'the radar flags deception.':'a comparison would flag it.') :
+     mode==='vgpo'? 'Pure <b>VGPO</b> walks Doppler but leaves range fixed → the two disagree ('+vRangeTracker.toFixed(0)+' vs '+vDopTracker.toFixed(0)+' m/s) → '+(ep?'the radar flags deception.':'a comparison would flag it.') :
+     '<b>Coordinated RVGPO</b> pulls both so Ṙ<sub>range</sub>≈Ṙ<sub>doppler</sub> ('+vRangeTracker.toFixed(0)+'≈'+vDopTracker.toFixed(0)+' m/s) — the consistency check passes and the false target looks like a genuine maneuver.')+
+    ' The pull-off follows R<sub>PO</sub>=½at² with a≤'+gee+'g (10.61); Doppler follows f<sub>d</sub>=2Ṙ/λ (10.63). This is why modern EA coordinates the two, and why counter-DRFM turns to statistical / waveform methods instead. Pace Ch. 10.7.';
+}
+
+/* ---------------- 4. DIGITAL IMAGE SYNTHESIZER: structured false target --- */
+function disScatterers(preset){
+  // range-Doppler scatterer list {r:0..1 range, d:0..1 doppler, a:amp}
+  const S=[];
+  if(preset==='point'){ S.push({r:0.5,d:0.5,a:1}); return S; }
+  if(preset==='air'){ // small fast jet: compact body + wings + engine spectral lines (JEM)
+    for(let i=0;i<6;i++) S.push({r:0.44+i*0.02,d:0.5+0.02*Math.sin(i),a:0.6+0.4*Math.random()});
+    S.push({r:0.5,d:0.5,a:1}); S.push({r:0.46,d:0.64,a:0.5}); S.push({r:0.54,d:0.36,a:0.5});
+    for(let i=0;i<8;i++) S.push({r:0.5,d:0.18+i*0.08,a:0.22});      // JEM/prop modulation lines
+    return S;
+  }
+  // ship (default): long hull line + superstructure block + two masts
+  for(let i=0;i<26;i++) S.push({r:0.12+i*0.028,d:0.28+0.02*Math.sin(i*0.6),a:0.35+0.15*Math.random()}); // hull
+  for(let i=0;i<8;i++) for(let j=0;j<4;j++) S.push({r:0.45+i*0.02,d:0.4+j*0.05,a:0.7+0.3*Math.random()}); // superstructure
+  S.push({r:0.52,d:0.82,a:1}); S.push({r:0.66,d:0.78,a:0.95});     // masts (bright)
+  S.push({r:0.3,d:0.62,a:0.6}); S.push({r:0.8,d:0.5,a:0.55});      // bow/stern features
+  return S;
+}
+function drawDIS(){
+  const preset=gid('dc-dis-preset').value, kp=+gid('dc-dis-kp').value, kg=+gid('dc-dis-kg').value, adder=+gid('dc-dis-adder').value;
+  gid('dc-dis-kpv').textContent=kp; gid('dc-dis-kgv').textContent=kg; gid('dc-dis-adderv').textContent=adder;
+  const S=disScatterers(preset);
+  const NR=64, ND=52;                                // range bins x doppler bins (the ISAR image)
+  const img=new Float64Array(NR*ND);
+  // synthesizer resolution: finite phase bits -> doppler smear ~ 1/2^kp ; gain bits -> amplitude quantization (exponential)
+  const dopSig = Math.max(0.6, 6/Math.pow(2,kp));    // doppler blur (bins) grows as bits drop
+  const gLevels = Math.pow(2, kg);
+  const gq=a=>{ if(a<=0)return 0; const lv=Math.min(gLevels-1, Math.floor(a*gLevels)); return (lv+1)/gLevels; };  // exponential-ish quantized gain
+  let totalGain=0;
+  for(const sc of S){ const rc=sc.r*(NR-1), dc=sc.d*(ND-1); const amp=gq(sc.a);
+    const gsh=Math.min(gLevels-1,Math.floor(sc.a*gLevels)); totalGain+=Math.pow(2,gsh);   // sum of 2^g(r,n) into the output adder
+    for(let d=0;d<ND;d++){ const wd=Math.exp(-0.5*Math.pow((d-dc)/dopSig,2)); if(wd<0.02)continue;
+      for(let r=Math.max(0,Math.round(rc)-1);r<=Math.min(NR-1,Math.round(rc)+1);r++){ const wr=Math.exp(-0.5*Math.pow((r-rc)/0.8,2)); img[r*ND+d]+=amp*wr*wd; } } }
+  // output-adder overflow: Pace keeps ~3-bit headroom; exceed 2^(word-3) and the sum wraps (2s-complement) -> corruption
+  const overflow = totalGain > Math.pow(2, adder-3);
+  if(overflow){ let mx0=0; for(const v of img) mx0=Math.max(mx0,v); const su=totalGain/Math.pow(2,adder-3);
+    for(let i=0;i<img.length;i++){ const v=(img[i]/(mx0||1))*su*3; img[i]=Math.abs(((v)%2)-1); } }
+  const overflowed=overflow?1:0;
+  let mx=0; for(const v of img) mx=Math.max(mx,v);
+  const {c,ctx,w,h}=setupCanvas('c-decep',0.56); ctx.clearRect(0,0,w,h);
+  const {gx,gy}=axes(ctx,w,h,0,NR,0,ND,'Range bin','Doppler (cross-range) bin',niceTicks(0,NR,6).map(v=>Math.round(v)),niceTicks(0,ND,6).map(v=>Math.round(v)));
+  const cw=(gx(NR)-gx(0))/NR+1, ch=(gy(0)-gy(ND))/ND+1;
+  for(let r=0;r<NR;r++)for(let d=0;d<ND;d++){ const v=img[r*ND+d]/(mx||1); if(v<0.015)continue; ctx.fillStyle=cafHeat(Math.pow(v,0.6)); ctx.fillRect(gx(r)-cw/2,gy(d)-ch/2,cw,ch); }
+  watermark(ctx,w,h);
+  const DR=6.02*adder;
+  const detectable = kp<=2 || kg<=1 || overflowed>0;
+  gid('dc-stage').textContent = preset==='ship'?'Ship (extended)':preset==='air'?'Aircraft':'Point';
+  gid('dc-err').innerHTML=S.length+' <small>scatterers</small>';
+  gid('dc-track').innerHTML = overflowed>0?'<span style="color:var(--jam)">ADDER OVERFLOW</span>':detectable?'<span style="color:var(--warn)">ARTIFACTS</span>':'<span style="color:var(--good)">CONVINCING</span>';
+  gid('dc-epstat').textContent='DR '+DR.toFixed(0)+' dB';
+  gid('dc-cap').textContent='Digital Image Synthesizer (Pace Ch. 10.10): a false target isn’t a point — it’s a range-Doppler image built from many scatterers with per-bin phase & gain coefficients, so an ISAR/SAR sees a structured, plausible target.';
+  gid('dc-explain').innerHTML='<b>Structured false-target synthesis.</b> Each range bin r replays the intercepted chirp with a phase-increment φ<sub>inc</sub>(r,n) (rotating the DRFM phase samples pulse-to-pulse to place Doppler) and a gain 2<sup>g(r,n)</sup> (left-shifts setting the scatterer RCS) — Pace eqs. 10.85–10.98. <b>Phase bits k<sub>p</sub>='+kp+'</b> set the cross-range (Doppler) resolution: drop them and the image smears. <b>Gain bits k<sub>g</sub>='+kg+'</b> quantize scatterer amplitudes (exponential thresholds, eq. 10.90–10.93). The summation adder is the bottleneck: dynamic range <b>DR = 20·log₁₀(2<sup>'+adder+'</sup>) = '+DR.toFixed(0)+' dB</b>; exceed it and the adder <b>overflows</b>, wrapping the summed image into corruption ('+(overflowed>0?'<span style="color:var(--jam)">overflow here — raise the word length</span>':'no overflow here')+') — Pace calls overflow “the biggest problem.” For the decoy to survive, its range resolution must stay coarser than the victim ISAR’s, or the extra structure gives it away. Pace Ch. 10.10.';
+}
+
+/* ---------------- 5. DRFM DESIGNER: tradeoff workbench -------------------- */
+function drawDRFMdesigner(){
+  const n=+gid('dc-des-bits').value, phase=segOn('dc-des-samp')==='phase', af=+gid('dc-des-a').value/100,
+        fs=+gid('dc-des-fs').value, word=+gid('dc-des-word').value, nft=+gid('dc-des-nft').value;
+  gid('dc-des-bitsv').textContent=n; gid('dc-des-av').textContent=Math.round(af*100); gid('dc-des-fsv').textContent=fs.toFixed(1); gid('dc-des-wordv').textContent=word; gid('dc-des-nftv').textContent=nft;
+  const sp=drfmSpurComb(n,phase);
+  const ibw = af*fs/2*1000;                          // MHz  (SSB: IBW = a fs/2)
+  const snr = drfmSNR(n);
+  const sfdr = -sp.worst;
+  const DR = 6.02*word;
+  const memNs = Math.pow(2, Math.min(20,word))/ (fs*1e3) ;   // not shown; placeholder
+  // spur preview (top, full axes + watermark) and bordered verdict tiles (below)
+  const {c,ctx,w,h}=setupCanvas('c-decep',0.64); ctx.clearRect(0,0,w,h);
+  const xMax=phase?Math.max(30,sp.wm+6):41, yMin=-55,yMax=4;
+  const px0=PAD.l, px1=w-PAD.r, py0=PAD.t, py1=Math.round(h*0.48);
+  const gx=x=>px0+(x/xMax)*(px1-px0), gy=v=>py0+(1-(v-yMin)/(yMax-yMin))*(py1-py0);
+  ctx.font='10px system-ui';
+  for(const v of [0,-10,-20,-30,-40,-50]){ const Y=gy(v); ctx.strokeStyle=css('--grid'); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(px0,Y); ctx.lineTo(px1,Y); ctx.stroke(); ctx.fillStyle=css('--muted'); ctx.textAlign='right'; ctx.textBaseline='middle'; ctx.fillText(v+'',px0-6,Y); }
+  for(const v of niceTicks(0,xMax,6).map(x=>Math.round(x))){ const X=gx(v); ctx.strokeStyle=css('--grid'); ctx.beginPath(); ctx.moveTo(X,py0); ctx.lineTo(X,py1); ctx.stroke(); ctx.fillStyle=css('--muted'); ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText(v+'',X,py1+4); }
+  ctx.strokeStyle=css('--axis'); ctx.lineWidth=1.2; ctx.strokeRect(px0,py0,px1-px0,py1-py0);
+  ctx.fillStyle=css('--ink2'); ctx.textAlign='center'; ctx.textBaseline='top'; ctx.font='11px system-ui'; ctx.fillText('Harmonic / false-target offset (× f₀)',(px0+px1)/2,py1+18);
+  ctx.save(); ctx.translate(px0-38,(py0+py1)/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('Relative amplitude (dBc)',0,0); ctx.restore();
+  ctx.save(); ctx.beginPath(); ctx.rect(px0,py0,px1-px0,py1-py0); ctx.clip(); watermark(ctx,w,py1+PAD.b); ctx.restore();
+  ctx.strokeStyle=css('--muted'); ctx.setLineDash([5,4]); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(px0,gy(-20)); ctx.lineTo(px1,gy(-20)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=css('--muted'); ctx.font='9px system-ui'; ctx.textAlign='left'; ctx.textBaseline='bottom'; ctx.fillText('−20 dBc detectable',px0+4,gy(-20)-2);
+  const stem=(x,dB,col,lw)=>{ const X=gx(x),Y=gy(Math.max(yMin,Math.min(yMax,dB))); ctx.strokeStyle=col; ctx.lineWidth=lw||1.6; ctx.beginPath(); ctx.moveTo(X,gy(yMin)); ctx.lineTo(X,Y); ctx.stroke(); ctx.fillStyle=col; ctx.beginPath(); ctx.arc(X,Y,2.6,0,TAU); ctx.fill(); };
+  stem(1,0,css('--good'),2.6);
+  for(const s of sp.out){ if(s.m>xMax)continue; stem(s.m,s.dB,s.m===sp.wm?css('--jam'):css('--s1')); }
+  ctx.fillStyle=css('--good'); ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.fillText('f₀',gx(1),gy(0)-6);
+  // ---- verdict tiles (bordered cards) ----
+  const covert = sfdr>=40, ok = sfdr>=25;
+  const verdict = covert?['COVERT',css('--good')] : ok?['MODERATE',css('--warn')] : ['DETECTABLE',css('--jam')];
+  const tiles=[['Phase bits',n+'',null],['SFDR',sfdr.toFixed(0)+' dB',null],['SNR',snr.toFixed(1)+' dB',null],['Total spur',sp.tot.toFixed(2)+'%',null],
+               ['IBW ('+(phase?'phase':'amp')+')',ibw.toFixed(0)+' MHz',null],['Adder DR',DR.toFixed(0)+' dB',null],['False targets',nft+'',null],['Detectability',verdict[0],verdict[1]]];
+  const cols=4, gap=8, ty0=py1+34, tw=(px1-px0-gap*(cols-1))/cols, th=(h-ty0-2-gap)/2;
+  const rrect=(x,y,ww,hh,r)=>{ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+ww,y,x+ww,y+hh,r); ctx.arcTo(x+ww,y+hh,x,y+hh,r); ctx.arcTo(x,y+hh,x,y,r); ctx.arcTo(x,y,x+ww,y,r); ctx.closePath(); };
+  tiles.forEach((tl,i)=>{ const cx=px0+(i%cols)*(tw+gap), cy=ty0+Math.floor(i/cols)*(th+gap);
+    rrect(cx,cy,tw,th,10); ctx.fillStyle=css('--card'); ctx.fill(); ctx.strokeStyle=css('--border'); ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle=css('--ink2'); ctx.font='10px system-ui'; ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText(tl[0],cx+10,cy+8);
+    ctx.fillStyle= tl[2]||css('--ink'); ctx.font='600 16px system-ui'; ctx.fillText(tl[1],cx+10,cy+24); });
+  gid('dc-stage').textContent=n+'-bit '+(phase?'phase':'amp');
+  gid('dc-err').innerHTML=sfdr.toFixed(0)+' <small>dB SFDR</small>';
+  gid('dc-track').innerHTML='<span style="color:'+verdict[1]+'">'+verdict[0]+'</span>';
+  gid('dc-epstat').textContent='SNR '+snr.toFixed(1)+' dB';
+  gid('dc-cap').textContent='DRFM designer: trade phase-bit depth, sampling architecture, bandwidth and word length against spurious performance, dynamic range and counter-DRFM detectability — the core design tension in Pace Part I.';
+  gid('dc-explain').innerHTML='<b>Design tradeoffs.</b> More <b>phase bits</b> buy spurious-free dynamic range (SFDR ≈ 9×bits dB) and SNR = 6.02n+1.76, but cost memory, power and processing rate. <b>Amplitude vs phase sampling</b> changes the spur signature (phase sampling is constant-envelope). Instantaneous bandwidth <b>IBW = a·f<sub>s</sub>/2 ≈ '+ibw.toFixed(0)+' MHz</b> (SSB, a='+af.toFixed(2)+', eq. 5.99). The output-adder <b>word length</b> sets image dynamic range (DR = 6.02·word = '+DR.toFixed(0)+' dB) and how many false targets can be summed before overflow. The verdict weighs the worst spur against a −20 dBc detectability line: below it a counter-DRFM receiver can key on the comb. Tune for your threat — covert decoys need ≥4–5 bits. Pace Ch. 5.10 / 5.12.';
+}
+/* ---------------- 6. DRFM I/Q IMAGE + LO LEAKAGE (Pace Ch. 5.10.1) -------- */
+function drawIQimage(){
+  const ampdB=+gid('dc-iq-amp').value, phdeg=+gid('dc-iq-ph').value, iso=+gid('dc-iq-iso').value;
+  gid('dc-iq-ampv').textContent=ampdB.toFixed(2); gid('dc-iq-phv').textContent=phdeg.toFixed(1); gid('dc-iq-isov').textContent=iso;
+  const g=Math.pow(10,ampdB/20)-1, ph=phdeg*Math.PI/180;
+  const irr=10*Math.log10((g*g+ph*ph)/4 + 1e-9);            // image level relative to wanted (dBc)
+  const {c,ctx,w,h}=setupCanvas('c-decep',0.56); ctx.clearRect(0,0,w,h);
+  const xMin=-1.6,xMax=1.6, yMin=-75,yMax=5;
+  const {gx,gy}=axes(ctx,w,h,xMin,xMax,yMin,yMax,'Frequency offset from IBW centre  (× f_IF)','Relative amplitude (dBc)',[-1.5,-1,-0.5,0,0.5,1,1.5],niceTicks(yMin,yMax,6).map(v=>Math.round(v)));
+  ctx.strokeStyle=css('--muted'); ctx.setLineDash([4,4]); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(gx(xMin),gy(-30)); ctx.lineTo(gx(xMax),gy(-30)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=css('--muted'); ctx.font='9px system-ui'; ctx.textAlign='left'; ctx.textBaseline='bottom'; ctx.fillText('−30 dBc',gx(xMin)+4,gy(-30)-2);
+  const stem=(x,dB,col,lw,lbl)=>{ const X=gx(x),Y=gy(Math.max(yMin,Math.min(yMax,dB))); ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.beginPath(); ctx.moveTo(X,gy(yMin)); ctx.lineTo(X,Y); ctx.stroke(); ctx.fillStyle=col; ctx.beginPath(); ctx.arc(X,Y,3,0,TAU); ctx.fill(); if(lbl){ ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.fillText(lbl,X,Y-6);} };
+  stem(1,0,css('--good'),2.6,'false target (f_IF)');
+  stem(-1,irr,css('--jam'),2.4,'I/Q image');
+  stem(0,-iso,css('--warn'),2.2,'LO leakage');
+  watermark(ctx,w,h);
+  const imgVis=irr>-30, beaconVis=iso<60;
+  gid('dc-stage').textContent='Δamp '+ampdB.toFixed(2)+'dB · Δφ '+phdeg.toFixed(1)+'°';
+  gid('dc-err').innerHTML=irr.toFixed(1)+' <small>dBc image</small>';
+  gid('dc-track').innerHTML=(imgVis||beaconVis)?'<span style="color:var(--jam)">SPURS VISIBLE</span>':'<span style="color:var(--good)">CLEAN</span>';
+  gid('dc-epstat').textContent='IRR '+(-irr).toFixed(0)+' dB';
+  gid('dc-cap').textContent='DRFM I/Q image & LO leakage (Pace Ch. 5.10.1): quadrature imbalance throws a mirror-image false target, and finite mixer isolation leaks a CW beacon at band centre — both are counter-DRFM tells.';
+  gid('dc-explain').innerHTML='<b>Image false target & LO beacon.</b> A superheterodyne DRFM translates f<sub>IF</sub> and its mirror f<sub>c</sub>−2f<sub>IF</sub> to the same place; only the quadrature (I/Q) balance keeps them apart. The image sits at <b>IRR = 10·log₁₀((g²+Δφ²)/4) = '+irr.toFixed(1)+' dBc</b> below the wanted false target, where g is the amplitude imbalance and Δφ the phase error. Pace: 30 dBc image suppression needs amplitude imbalance <b>&lt; 0.55 dB</b> and phase <b>&lt; 3.6°</b> (Fig. 5.55) — loosen the sliders and the mirror target climbs above the −30 dBc line. Meanwhile the up-converter mixer gives only ~60 dB isolation, so the <b>LO leaks a CW beacon</b> at the centre of the instantaneous bandwidth ('+(-iso)+' dBc) — a dead giveaway that a repeater is transmitting. Both are spurious signatures a counter-DRFM ES receiver keys on. Pace, <i>Developing Digital RF Memories</i>, Ch. 5.10.1.';
+}
+
+function drawDRFMdispatch(t){
+  if(decepMode==='fidelity') return drawDRFMfidelity();
+  if(decepMode==='counter') return drawCounterDRFM();
+  if(decepMode==='coord') return drawCoordRVGPO(t);
+  if(decepMode==='dis') return drawDIS();
+  if(decepMode==='iq') return drawIQimage();
+  return drawDRFMdesigner();
 }
 
 function renderAll(){ computeNull();computeSLC();computeEng();computeScan();drawScope();drawDeception(tnow);drawRWR(tnow);drawDecoy(tnow);computeRx();drawELINT();drawStealth();drawSP();drawRHI(tnow);drawMpath();drawDet();drawDyn();drawBudget();computeFund();computeRangeEq();drawBurnMC(); }
