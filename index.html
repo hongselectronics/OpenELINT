@@ -1622,7 +1622,7 @@ function animLoop(t){
   else if(a==='rwr' && rwrAnim){ drawRWR(tnow); }
   else if(a==='decoy' && decoyAnim){ drawDecoy(tnow); }
   else if(a==='elint' && ((elintMode==='pdw'&&elintAnim) || elintMode==='rx' || (elintMode==='geo'&&segOn('el-geomethod')==='run'))){ drawELINT(); }
-  else if(a==='displays' && dispAnim && simSpeed>0){ drawDISPLAYS(tnow); }
+  else if(a==='disp' && dispAnim && simSpeed>0){ drawDISPLAYS(tnow); }
   else if(a==='rhi' && rhiAnim){ drawRHI(tnow); }
   rafId=requestAnimationFrame(animLoop);
 }
