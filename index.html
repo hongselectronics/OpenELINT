@@ -115,6 +115,7 @@
   #el-geomethod button, #s-caps button{ flex:1 1 auto; min-width:auto; font-size:11px; padding:7px 9px; white-space:nowrap; }
 
   .stage{min-width:0;}
+  #el-table{overflow-x:auto;}
   .can-wrap{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 8px 6px; position:relative;}
   canvas{width:100%; display:block; touch-action:none;}
   .cap{font-size:12px; color:var(--muted); padding:6px 8px 2px;}
@@ -549,7 +550,7 @@
   <!-- TAB 9: ELINT / ESM -->
   <section class="panel" id="p-elint">
     <div class="scopetabs" id="elinttabs">
-      <button data-e="pdw" class="on">Intercept &amp; PDW</button><button data-e="eid">Emitter ID</button><button data-e="geo">Geolocation</button><button data-e="rx">ESM Receivers</button><button data-e="interf">Interferometer</button><button data-e="music">Array / MUSIC</button><button data-e="rootmu">Root-MUSIC</button><button data-e="caf">Cross-Ambiguity</button><button data-e="mop">Intrapulse</button><button data-e="scan">Scan analysis</button><button data-e="rad">Energy detect</button><button data-e="pri">PRI analysis</button>
+      <button data-e="pdw" class="on">Intercept &amp; PDW</button><button data-e="pdwdes">PDW Designer</button><button data-e="eid">Emitter ID</button><button data-e="geo">Geolocation</button><button data-e="rx">ESM Receivers</button><button data-e="interf">Interferometer</button><button data-e="music">Array / MUSIC</button><button data-e="rootmu">Root-MUSIC</button><button data-e="caf">Cross-Ambiguity</button><button data-e="mop">Intrapulse</button><button data-e="scan">Scan analysis</button><button data-e="rad">Energy detect</button><button data-e="pri">PRI analysis</button>
     </div>
     <div class="layout">
       <div class="controls">
@@ -598,6 +599,20 @@
         <div class="ctl" id="el-pri-type-wrap" style="display:none"><label>E1 PRI modulation</label><div class="seg" id="el-pri-type"><button data-o="stable">Stable</button><button data-o="stagger" class="on">Stagger</button><button data-o="jitter">Jitter</button><button data-o="dwell">Dwell</button><button data-o="sliding">Sliding</button></div></div>
         <div class="ctl" id="el-pri-jit-wrap" style="display:none"><label>Jitter <b><span id="el-pri-jitv">10</span> %</b></label><input type="range" id="el-pri-jit" min="0" max="30" step="1" value="10"></div>
         <div class="ctl" id="el-pri-ne-wrap" style="display:none"><label>Emitters <b><span id="el-pri-nev">3</span></b></label><input type="range" id="el-pri-ne" min="1" max="3" step="1" value="3"></div>
+        <div class="ctl" id="el-pdwd-view-wrap" style="display:none"><label>View</label><div class="seg" id="el-pdwd-view"><button data-o="pulse" class="on">Pulse editor</button><button data-o="train">Pulse train</button><button data-o="pdw">PDW stream</button></div></div>
+        <div class="ctl" id="el-pdwd-rf-wrap" style="display:none"><label>RF frequency <b><span id="el-pdwd-rfv">9.20</span> GHz</b></label><input type="range" id="el-pdwd-rf" min="0.5" max="18" step="0.01" value="9.2"></div>
+        <div class="ctl" id="el-pdwd-shape-wrap" style="display:none"><label>Pulse shape</label><div class="seg" id="el-pdwd-shape"><button data-o="rect">Rect</button><button data-o="rcos" class="on">Raised-cos</button><button data-o="trap">Trapezoid</button></div></div>
+        <div class="ctl" id="el-pdwd-rise-wrap" style="display:none"><label>Rise / fall time <b><span id="el-pdwd-risev">50</span> ns</b></label><input type="range" id="el-pdwd-rise" min="5" max="500" step="5" value="50"></div>
+        <div class="ctl" id="el-pdwd-pw-wrap" style="display:none"><label>Pulse width <b><span id="el-pdwd-pwv">1.30</span> µs</b></label><input type="range" id="el-pdwd-pw" min="0.1" max="20" step="0.05" value="1.3"></div>
+        <div class="ctl" id="el-pdwd-mod-wrap" style="display:none"><label>Modulation (MOP)</label><div class="seg" id="el-pdwd-mod"><button data-o="cw" class="on">CW</button><button data-o="chirp">FM chirp</button><button data-o="bpsk">BPSK</button></div></div>
+        <div class="ctl" id="el-pdwd-bw-wrap" style="display:none"><label>Chirp bandwidth <b><span id="el-pdwd-bwv">40</span> MHz</b></label><input type="range" id="el-pdwd-bw" min="1" max="100" step="1" value="40"></div>
+        <div class="ctl" id="el-pdwd-pri-wrap" style="display:none"><label>PRI <b><span id="el-pdwd-priv">250</span> µs</b></label><input type="range" id="el-pdwd-pri" min="10" max="2000" step="5" value="250"></div>
+        <div class="ctl" id="el-pdwd-jit-wrap" style="display:none"><label>PRI jitter <b><span id="el-pdwd-jitv">0</span> %</b></label><input type="range" id="el-pdwd-jit" min="0" max="20" step="1" value="0"></div>
+        <div class="ctl" id="el-pdwd-np-wrap" style="display:none"><label>Number of pulses <b><span id="el-pdwd-npv">5</span></b></label><input type="range" id="el-pdwd-np" min="1" max="16" step="1" value="5"></div>
+        <div class="ctl" id="el-pdwd-scan-wrap" style="display:none"><label>Antenna scan rate <b><span id="el-pdwd-scanv">30</span> rpm</b></label><input type="range" id="el-pdwd-scan" min="1" max="120" step="1" value="30"></div>
+        <div class="ctl" id="el-pdwd-bw3-wrap" style="display:none"><label>3-dB beamwidth <b><span id="el-pdwd-bw3v">6.0</span> °</b></label><input type="range" id="el-pdwd-bw3" min="0.5" max="30" step="0.5" value="6"></div>
+        <div class="ctl" id="el-pdwd-pa-wrap" style="display:none"><label>Pulse amplitude (PA) <b><span id="el-pdwd-pav">-45</span> dBm</b></label><input type="range" id="el-pdwd-pa" min="-90" max="-20" step="1" value="-45"></div>
+        <div class="ctl" id="el-pdwd-aoa-wrap" style="display:none"><label>Angle of arrival <b><span id="el-pdwd-aoav">30</span> °</b></label><input type="range" id="el-pdwd-aoa" min="-180" max="180" step="1" value="30"></div>
       </div>
       <div class="stage">
         <div class="can-wrap"><canvas id="c-elint"></canvas><div class="tip" id="tip-elint"></div></div>
@@ -2157,6 +2172,7 @@ function updateElintControls(){
   show('el-rxtype-wrap',rx); show('el-agility-wrap',rx); show('el-dwell-wrap',rx);
   const interf=m==='interf', music=m==='music'||m==='rootmu', caf=m==='caf';
   const mop=m==='mop', scan=m==='scan', rad=m==='rad', pri=m==='pri';
+  const pdwdes=m==='pdwdes'; ['el-pdwd-view-wrap','el-pdwd-rf-wrap','el-pdwd-shape-wrap','el-pdwd-rise-wrap','el-pdwd-pw-wrap','el-pdwd-mod-wrap','el-pdwd-bw-wrap','el-pdwd-pri-wrap','el-pdwd-jit-wrap','el-pdwd-np-wrap','el-pdwd-scan-wrap','el-pdwd-bw3-wrap','el-pdwd-pa-wrap','el-pdwd-aoa-wrap'].forEach(id=>show(id,pdwdes));
   show('el-mop-wf-wrap',mop);show('el-mop-snr-wrap',mop);
   show('el-scan-type-wrap',scan);show('el-scan-per-wrap',scan);show('el-scan-noise-wrap',scan);
   show('el-rad-tw-wrap',rad);show('el-rad-pfa-wrap',rad);show('el-rad-snr-wrap',rad);
@@ -2164,7 +2180,7 @@ function updateElintControls(){
   show('el-if-d-wrap',interf);show('el-if-aoa-wrap',interf);show('el-if-snr-wrap',interf);show('el-if-dual-wrap',interf);
   show('el-mu-n-wrap',music);show('el-mu-a1-wrap',music);show('el-mu-a2-wrap',music);show('el-mu-snr-wrap',music);show('el-mu-snap-wrap',music);
   show('el-caf-snr-wrap',caf);show('el-caf-dwell-wrap',caf);show('el-caf-bw-wrap',caf);show('el-caf-tdoa-wrap',caf);show('el-caf-fdoa-wrap',caf);
-  gid('el-ctlh').textContent = pdw?'Intercept':eid?'Emitter ID':geo?'Geolocation':interf?'Interferometer DF':(m==='rootmu')?'Root-MUSIC':music?'Array / MUSIC':caf?'Cross-ambiguity':mop?'Intrapulse analysis':scan?'Scan analysis':rad?'Energy detection':pri?'PRI analysis':'ESM receivers';
+  gid('el-ctlh').textContent = pdw?'Intercept':eid?'Emitter ID':geo?'Geolocation':interf?'Interferometer DF':(m==='rootmu')?'Root-MUSIC':music?'Array / MUSIC':caf?'Cross-ambiguity':mop?'Intrapulse analysis':scan?'Scan analysis':rad?'Energy detection':pri?'PRI analysis':pdwdes?'PDW designer':'ESM receivers';
 }
 function drawELINT(){
   const cel=gid('c-elint'); if(!cel || cel.parentElement.clientWidth<60) return;
@@ -2179,6 +2195,7 @@ function drawELINT(){
   else if(elintMode==='scan') drawScan();
   else if(elintMode==='rad') drawRadiometer();
   else if(elintMode==='pri') drawPRI();
+  else if(elintMode==='pdwdes') drawPDWdesigner();
   else if(elintMode==='caf') drawCAF();
   else drawRxCompare();
 }
@@ -3731,6 +3748,135 @@ function drawDTEST(){
   gid('dt-explain').innerHTML='<b>One test, four philosophies.</b> Every detector decides between <b>H₀</b> (noise only) and <b>H₁</b> (signal + noise) by comparing a statistic T(x) to a threshold γ; the red tail is the false-alarm probability P<sub>fa</sub> (Type I / α) and the amber tail the miss probability P<sub>miss</sub> (Type II / β), with P<sub>d</sub>=1−β (Table 6.1). What differs between detectors is <b>how γ is chosen</b>, which depends on what you know (Table 6.2). <b>Bayesian</b> testing needs the priors <i>and</i> the costs: it minimises average risk, γ = d/2 + ln(η)/d with η = (P₀/P₁)·(cost ratio). <b>Minimax</b> drops the priors — it places γ to minimise the <i>worst-case</i> risk over any prior (for equal costs, the midpoint d/2, equalising the two errors). <b>Neyman–Pearson</b> drops the costs too: it simply <b>fixes P<sub>fa</sub></b> and maximises P<sub>d</sub> — the radar default (γ = Q⁻¹(P<sub>fa</sub>)). <b>CFAR</b> goes further and assumes even the <b>noise power is unknown</b>, estimating it from reference cells to hold P<sub>fa</sub> — at a small <b>CFAR loss</b> that shrinks as more cells are averaged. Slide the SNR to separate the hypotheses and switch criteria to watch the threshold move. Garren, Majumder &amp; Blasch, <i>Essential Principles of Signals Collection and Analysis</i>, Ch. 6; Kay, <i>Detection Theory</i>.';
 }
 
+/* ================= PDW DESIGNER / RADAR PULSE BUILDER ================= */
+let pdwdView='pulse';
+function pdwStat(k,v,u,col){ return '<div class="stat"><div class="k">'+k+'</div><div class="v" style="font-size:15px'+(col?';color:var('+col+')':'')+'">'+v+(u?' <small>'+u+'</small>':'')+'</div></div>'; }
+function pdwEnv(t,PW,rise,fall,shape){ // t,PW,rise,fall in µs; returns 0..1
+  if(t<0||t>PW) return 0;
+  if(shape==='rect') return 1;
+  const inRise=t<rise, inFall=t>PW-fall;
+  if(shape==='trap'){ if(inRise) return t/rise; if(inFall) return (PW-t)/fall; return 1; }
+  // raised cosine
+  if(inRise) return 0.5*(1-Math.cos(Math.PI*t/rise));
+  if(inFall) return 0.5*(1-Math.cos(Math.PI*(PW-t)/fall));
+  return 1;
+}
+function updatePDWDControls(){ const sh=(id,on)=>{const e=gid(id);if(e)e.style.display=on?'':'none';};
+  const shape=segOn('el-pdwd-shape')||'rcos', mod=segOn('el-pdwd-mod')||'cw';
+  sh('el-pdwd-rise-wrap',shape!=='rect'); sh('el-pdwd-bw-wrap',mod==='chirp');
+}
+function drawPDWdesigner(){
+  updatePDWDControls();
+  const view=pdwdView;
+  const rf=+gid('el-pdwd-rf').value, pw=+gid('el-pdwd-pw').value, rise=+gid('el-pdwd-rise').value/1000;
+  const shape=segOn('el-pdwd-shape')||'rcos', mod=segOn('el-pdwd-mod')||'cw', chbw=+gid('el-pdwd-bw').value;
+  const pri=+gid('el-pdwd-pri').value, jit=+gid('el-pdwd-jit').value/100, np=+gid('el-pdwd-np').value;
+  const rpm=+gid('el-pdwd-scan').value, bw3=+gid('el-pdwd-bw3').value, pa=+gid('el-pdwd-pa').value, aoa=+gid('el-pdwd-aoa').value;
+  gid('el-pdwd-rfv').textContent=rf.toFixed(2); gid('el-pdwd-pwv').textContent=pw.toFixed(2); gid('el-pdwd-risev').textContent=(rise*1000).toFixed(0);
+  gid('el-pdwd-bwv').textContent=chbw; gid('el-pdwd-priv').textContent=pri; gid('el-pdwd-jitv').textContent=Math.round(jit*100); gid('el-pdwd-npv').textContent=np;
+  gid('el-pdwd-scanv').textContent=rpm; gid('el-pdwd-bw3v').textContent=bw3.toFixed(1); gid('el-pdwd-pav').textContent=pa; gid('el-pdwd-aoav').textContent=aoa;
+  const modName={cw:'CW',chirp:'FM chirp',bpsk:'BPSK'}[mod];
+  if(view==='train') return pdwdTrain(pw,pri,jit,np,rpm,bw3,pa,rf,modName);
+  if(view==='pdw')   return pdwdStream(rf,pw,pri,jit,pa,aoa,mod,modName,shape,rise);
+  // ---- Pulse editor view ----
+  const rr=(shape==='rect')?0:rise, ff=rr;
+  const {c,ctx,w,h}=setupCanvas('c-elint',0.5); ctx.clearRect(0,0,w,h);
+  const xMax=pw*1.15;
+  const {gx,gy}=axes(ctx,w,h,-pw*0.06,xMax,0,1.18,'Time (µs)','Amplitude',niceTicks(0,xMax,7).map(v=>+v.toFixed(2)),[0,0.5,1]);
+  // filled envelope
+  ctx.fillStyle=css('--s1'); ctx.globalAlpha=0.22; ctx.beginPath(); ctx.moveTo(gx(0),gy(0));
+  for(let i=0;i<=240;i++){ const t=pw*i/240; ctx.lineTo(gx(t),gy(pdwEnv(t,pw,rr,ff,shape))); } ctx.lineTo(gx(pw),gy(0)); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1;
+  ctx.strokeStyle=css('--s1'); ctx.lineWidth=2.4; ctx.beginPath();
+  for(let i=0;i<=240;i++){ const t=pw*i/240; const X=gx(t),Y=gy(pdwEnv(t,pw,rr,ff,shape)); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke();
+  // modulation overlay: instantaneous frequency (chirp) or phase flips (bpsk)
+  if(mod==='chirp'){ ctx.strokeStyle=css('--s2'); ctx.lineWidth=1.8; ctx.setLineDash([5,3]); ctx.beginPath();
+    for(let i=0;i<=120;i++){ const t=pw*i/120; const fnorm=0.15+0.7*(i/120); const X=gx(t),Y=gy(fnorm); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=css('--s2'); ctx.font='10px system-ui'; ctx.textAlign='right'; ctx.textBaseline='bottom'; ctx.fillText('f: '+(-chbw/2)+'→'+(chbw/2)+' MHz',gx(pw),gy(0.9)); }
+  else if(mod==='bpsk'){ ctx.fillStyle=css('--s2'); ctx.font='10px system-ui'; ctx.textAlign='center'; for(let k=1;k<7;k++){ const t=pw*k/7; ctx.beginPath(); ctx.moveTo(gx(t),gy(0.5)); ctx.lineTo(gx(t),gy(1)); ctx.strokeStyle=css('--s2'); ctx.setLineDash([2,2]); ctx.stroke(); ctx.setLineDash([]); } ctx.fillText('phase flips (0/π)',gx(pw/2),gy(1.12)); }
+  // annotations: rise, fall, PW, 6dB
+  ctx.strokeStyle=css('--s3'); ctx.fillStyle=css('--s3'); ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.lineWidth=1.3;
+  const half=(shape==='rect')?0:rr/2, sixW=pw-half*2;
+  const yb=gy(0.5); ctx.beginPath(); ctx.moveTo(gx(half),yb); ctx.lineTo(gx(pw-half),yb); ctx.stroke(); ctx.fillText('6-dB width '+sixW.toFixed(2)+'µs',gx(pw/2),yb-3);
+  if(shape!=='rect'){ ctx.strokeStyle=css('--warn'); ctx.fillStyle=css('--warn'); const yr=gy(1.06); ctx.beginPath(); ctx.moveTo(gx(0),yr); ctx.lineTo(gx(rr),yr); ctx.stroke(); ctx.fillText('rise '+(rr*1000).toFixed(0)+'ns',gx(rr/2),yr-2); }
+  watermark(ctx,w,h);
+  gid('el-cap').textContent='PDW designer · Pulse editor — shape a single pulse (envelope + intrapulse modulation), the atomic building block of the emitter.';
+  gid('el-readouts').innerHTML=
+    pdwStat('RF frequency',rf.toFixed(3),'GHz','--s1')+
+    pdwStat('Pulse width',pw.toFixed(2),'µs')+
+    pdwStat('Pulse shape',{rect:'Rectangular',rcos:'Raised-cosine',trap:'Trapezoidal'}[shape],'')+
+    pdwStat('Rise / fall',(shape==='rect'?'0':(rise*1000).toFixed(0)),'ns')+
+    pdwStat('Modulation',modName,'','--s2')+
+    pdwStat(mod==='chirp'?'Chirp BW · TB':'Intrapulse', mod==='chirp'?(chbw+' MHz · '+(chbw*pw).toFixed(0)):(mod==='bpsk'?'biphase':'none'),'');
+  gid('el-table').innerHTML='';
+  gid('el-note').innerHTML='<b>Pulse editor.</b> Every emitter is built from a pulse defined by its <b>envelope</b> — width, and the <b>rise / fall time</b> and shape (rectangular, trapezoidal, or raised-cosine) that round its edges and set spectral splatter — plus its <b>intrapulse modulation</b>: none (CW), an <b>FM chirp</b> sweeping start→stop frequency (bandwidth '+chbw+' MHz → time-bandwidth '+(chbw*pw).toFixed(0)+' for pulse compression), or a <b>BPSK/phase code</b>. These are exactly the parameters an ELINT receiver measures back out (see Intrapulse analysis). Modelled on a lab signal-generator pulse editor. Build the train and the PDW stream in the other views.';
+  gid('el-explain').innerHTML='';
+}
+function pdwdTrain(pw,pri,jit,np,rpm,bw3,pa,rf,modName){
+  const Tscan=60/rpm, dwell=(bw3/360)*Tscan*1e6; // dwell µs
+  const {c,ctx,w,h}=setupCanvas('c-elint',0.5); ctx.clearRect(0,0,w,h);
+  const win=Math.max(2.5*dwell, 12*pri); // µs window
+  const t0=win/2; // beam-pointing time at window centre
+  const {gx,gy}=axes(ctx,w,h,0,win/1000,0,1.15,'Time (ms)','Received amplitude',niceTicks(0,win/1000,7).map(v=>+v.toFixed(2)),[0,0.5,1]);
+  const beam=t=>Math.exp(-2.773*Math.pow((t-t0)/(dwell/2),2))+0.02;
+  // envelope curve
+  ctx.strokeStyle=css('--s3'); ctx.lineWidth=1.6; ctx.globalAlpha=0.8; ctx.beginPath();
+  for(let i=0;i<=300;i++){ const t=win*i/300; const X=gx(t/1000),Y=gy(Math.min(1,beam(t))); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.globalAlpha=1;
+  // pulses under envelope
+  ctx.strokeStyle=css('--s1'); ctx.lineWidth=1.1; let t=0,k=0,cnt=0;
+  while(t<win && cnt<800){ const g=Math.min(1,beam(t)); const X=gx(t/1000); ctx.globalAlpha=0.9; ctx.beginPath(); ctx.moveTo(X,gy(0)); ctx.lineTo(X,gy(g)); ctx.stroke();
+    let p=pri*(1+jit*(2*prand(k)-0*0)); if(jit>0) p=pri*(1+jit*prand(k)); t+=p; k++; cnt++; }
+  ctx.globalAlpha=1;
+  // dwell bracket
+  ctx.strokeStyle=css('--s2'); ctx.fillStyle=css('--s2'); ctx.lineWidth=1.4; ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+  const yb=gy(1.08); ctx.beginPath(); ctx.moveTo(gx((t0-dwell/2)/1000),yb); ctx.lineTo(gx((t0+dwell/2)/1000),yb); ctx.stroke(); ctx.fillText('beam dwell '+(dwell/1000).toFixed(2)+'ms',gx(t0/1000),yb-2);
+  watermark(ctx,w,h);
+  const prf=1e6/pri, pulsesInBeam=Math.round(dwell/pri);
+  gid('el-cap').textContent='PDW designer · Pulse train — the emitter\'s pulses amplitude-modulated by the antenna beam as it scans past the receiver.';
+  gid('el-readouts').innerHTML=
+    pdwStat('Scan rate',rpm,'rpm','--s3')+
+    pdwStat('Scan period',Tscan.toFixed(2),'s')+
+    pdwStat('Beam dwell',(dwell/1000).toFixed(2),'ms','--s2')+
+    pdwStat('PRI · PRF',pri+'µs · '+(prf/1000).toFixed(1)+'kHz','')+
+    pdwStat('Pulses per illumination',pulsesInBeam,'')+
+    pdwStat('PRI jitter',Math.round(jit*100),'%');
+  gid('el-table').innerHTML='';
+  gid('el-note').innerHTML='<b>Pulse train under the antenna scan.</b> A ground observer sees the emitter\'s pulses only while its mainbeam sweeps past — so the received train is <b>amplitude-modulated by the antenna pattern</b> (green envelope) at the scan rate, with a beam dwell of '+(dwell/1000).toFixed(2)+' ms (≈'+pulsesInBeam+' pulses) once per '+Tscan.toFixed(1)+' s rotation. Inside the dwell the pulses repeat at the PRI (here with '+Math.round(jit*100)+'% jitter). This is precisely the waveform an ESM receiver digitises and reduces to PDWs, and the amplitude envelope is what the Scan-analysis sub-mode reads back to recover the scan type. Modelled on a signal-generator sequence + antenna-config builder.';
+  gid('el-explain').innerHTML='';
+}
+function pdwdStream(rf,pw,pri,jit,pa,aoa,mop,modName,shape,rise){
+  const priOf=k=>{ if(jit>0) return pri*(1+jit*prand(k)); return pri; };
+  const toas=[0]; for(let k=1;k<14;k++) toas.push(toas[k-1]+priOf(k-1));
+  const {c,ctx,w,h}=setupCanvas('c-elint',0.42); ctx.clearRect(0,0,w,h);
+  const tmax=3.35*pri+pw*2;
+  const {gx,gy}=axes(ctx,w,h,0,tmax,0,1.18,'Time (µs)','Amplitude',niceTicks(0,tmax,7).map(v=>Math.round(v)),[0,0.5,1]);
+  ctx.fillStyle=css('--s1');
+  for(const t of toas){ if(t>tmax)break; const x0=gx(t),x1=gx(Math.min(tmax,t+pw)); ctx.globalAlpha=0.85; ctx.fillRect(x0,gy(1),Math.max(1.5,x1-x0),gy(0)-gy(1)); }
+  ctx.globalAlpha=1;
+  ctx.strokeStyle=css('--s3'); ctx.fillStyle=css('--s3'); ctx.lineWidth=1.4; ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+  const y2=gy(0.5); ctx.beginPath(); ctx.moveTo(gx(0),y2); ctx.lineTo(gx(toas[1]),y2); ctx.stroke(); ctx.fillText('PRI',gx(toas[1]/2),y2-3);
+  ctx.strokeStyle=css('--s2'); ctx.fillStyle=css('--s2'); const y1=gy(1.09); ctx.beginPath(); ctx.moveTo(gx(0),y1); ctx.lineTo(gx(pw),y1); ctx.stroke(); ctx.fillText('PW',gx(pw/2),y1-2);
+  watermark(ctx,w,h);
+  const prf=1e6/pri;
+  gid('el-cap').textContent='PDW designer · PDW stream — the Pulse Descriptor Word format and the per-pulse records an ESM receiver would output.';
+  gid('el-readouts').innerHTML=
+    pdwStat('RF frequency',rf.toFixed(3),'GHz','--s1')+
+    pdwStat('Pulse width',pw.toFixed(2),'µs')+
+    pdwStat('PRI · PRF',pri+'µs · '+(prf/1000).toFixed(1)+'kHz','')+
+    pdwStat('Amplitude (PA)',pa,'dBm')+
+    pdwStat('AOA',aoa,'°','--warn')+
+    pdwStat('MOP',modName,'','--s2');
+  const fields=[['TOA',24],['RF',14],['PW',10],['PA',8],['AOA',8]], totBits=fields.reduce((a,f)=>a+f[1],0), cols=['--s1','--s3','--s2','--yellow','--jam'];
+  let bar='<div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:6px 0 12px;font-size:10px;text-align:center">';
+  fields.forEach((f,i)=>{ bar+='<div style="flex:'+f[1]+';background:color-mix(in srgb, var('+cols[i]+') 22%, transparent);padding:4px 2px;border-right:1px solid var(--border)"><b>'+f[0]+'</b><br><span style="color:var(--muted)">'+f[1]+' b</span></div>'; });
+  bar+='</div>';
+  let tbl='<div style="overflow-x:auto"><table class="oob"><tr><th>#</th><th class="num">TOA (µs)</th><th class="num">RF (MHz)</th><th class="num">PW (µs)</th><th class="num">PA (dBm)</th><th class="num">AOA (°)</th><th>MOP</th></tr>';
+  for(let k=0;k<6;k++){ tbl+='<tr><td>'+(k+1)+'</td><td class="num">'+toas[k].toFixed(2)+'</td><td class="num">'+(rf*1000).toFixed(1)+'</td><td class="num">'+pw.toFixed(2)+'</td><td class="num">'+pa+'</td><td class="num">'+aoa+'</td><td>'+modName+'</td></tr>'; }
+  tbl+='</table></div>';
+  gid('el-table').innerHTML='<div style="font-size:12px;color:var(--ink2);margin-top:4px"><b>PDW word format</b> — one '+totBits+'-bit record per pulse</div>'+bar+'<div style="font-size:12px;color:var(--ink2);margin-bottom:2px"><b>Generated PDW stream</b> ('+(jit>0?'jittered':'stable')+' PRI)</div>'+tbl;
+  gid('el-note').innerHTML='<b>The Pulse Descriptor Word.</b> An ESM/ELINT receiver reduces every intercepted pulse to a compact <b>PDW</b> — a fixed-format record of the pulse\'s measured parameters: time of arrival (TOA), RF frequency, pulse width (PW), pulse amplitude (PA), angle of arrival (AOA), and intrapulse-modulation (MOP) flags. It is the atomic unit of the ES chain: PDWs stream to the <b>deinterleaver</b> (sorting by PRI / RF / AOA — see PRI analysis) and then to <b>emitter identification</b>. Here you author the emitter in the Pulse editor and Pulse train views and read off the PDW stream it produces. Wiley, <i>ELINT</i>; Robertson, <i>Practical ESM Analysis</i>.';
+  gid('el-explain').innerHTML='';
+}
+
 function updateScenBar(tab){
   const usesR=SCEN_TABS.includes(tab), usesJ=JAM_TABS.includes(tab);
   gid('g-pwrap').style.display = tab==='eng'?'':'none';   // presets only on Engagement
@@ -3858,6 +4004,9 @@ segWire('el-mop-wf',()=>drawELINT()); listen(['el-mop-snr'],()=>drawELINT());
 segWire('el-scan-type',()=>drawELINT()); listen(['el-scan-per','el-scan-noise'],()=>drawELINT());
 listen(['el-rad-tw','el-rad-pfa','el-rad-snr'],()=>drawELINT());
 segWire('el-pri-type',()=>drawELINT()); listen(['el-pri-jit','el-pri-ne'],()=>drawELINT());
+document.querySelectorAll('#el-pdwd-view button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#el-pdwd-view button').forEach(x=>x.classList.remove('on'));b.classList.add('on');pdwdView=b.dataset.o;drawELINT();});
+segWire('el-pdwd-shape',()=>drawELINT()); segWire('el-pdwd-mod',()=>drawELINT());
+listen(['el-pdwd-rf','el-pdwd-rise','el-pdwd-pw','el-pdwd-bw','el-pdwd-pri','el-pdwd-jit','el-pdwd-np','el-pdwd-scan','el-pdwd-bw3','el-pdwd-pa','el-pdwd-aoa'],()=>drawELINT());
 listen(['el-caf-snr','el-caf-dwell','el-caf-bw','el-caf-tdoa','el-caf-fdoa'],drawELINT);
 segWire('el-agile',()=>drawELINT());
 segWire('el-agility',()=>drawELINT());
