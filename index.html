@@ -113,6 +113,10 @@
   .seg button.on{background:var(--s1); border-color:var(--s1); color:#fff;}
   /* long-label segments (5-way method picker, scope display set): size to content + wrap, no overflow */
   #el-geomethod button, #s-caps button{ flex:1 1 auto; min-width:auto; font-size:11px; padding:7px 9px; white-space:nowrap; }
+  /* GNSS jammer waveform labels need more room than generic 4-way segments. */
+  #gn-jam button{flex:1 1 calc(50% - 3px); min-width:0; min-height:38px; white-space:normal; line-height:1.15; padding:7px 8px;}
+  #gn-readouts .stat{min-width:135px;}
+  #gn-readouts .stat .v{font-size:18px; line-height:1.18; overflow-wrap:anywhere;}
 
   .stage{min-width:0;}
   #el-table{overflow-x:auto;}
@@ -438,15 +442,15 @@
         </div>
         <div id="dc-dis-ctls" style="display:none">
           <div class="ctl"><label>False-target type</label><select id="dc-dis-preset"><option value="ship">Ship (extended)</option><option value="air">Aircraft</option><option value="point">Point</option></select></div>
-          <div class="ctl"><label>Phase bits k<sub>p</sub> <b><span id="dc-dis-kpv">5</span></b></label><input type="range" id="dc-dis-kp" min="1" max="6" step="1" value="5"></div>
-          <div class="ctl"><label>Gain bits k<sub>g</sub> <b><span id="dc-dis-kgv">2</span></b></label><input type="range" id="dc-dis-kg" min="1" max="4" step="1" value="2"></div>
+          <div class="ctl"><label><span>Phase bits k<sub>p</sub></span> <b><span id="dc-dis-kpv">5</span></b></label><input type="range" id="dc-dis-kp" min="1" max="6" step="1" value="5"></div>
+          <div class="ctl"><label><span>Gain bits k<sub>g</sub></span> <b><span id="dc-dis-kgv">2</span></b></label><input type="range" id="dc-dis-kg" min="1" max="4" step="1" value="2"></div>
           <div class="ctl"><label>Adder word length <b><span id="dc-dis-adderv">16</span> bits</b></label><input type="range" id="dc-dis-adder" min="8" max="20" step="1" value="16"></div>
         </div>
         <div id="dc-des-ctls" style="display:none">
           <div class="ctl"><label>DRFM phase bits <b><span id="dc-des-bitsv">4</span></b></label><input type="range" id="dc-des-bits" min="1" max="8" step="1" value="4"></div>
           <div class="ctl"><label>Sampling architecture</label><div class="seg" id="dc-des-samp"><button data-o="amp" class="on">Amplitude</button><button data-o="phase">Phase</button></div></div>
           <div class="ctl"><label>IBW fraction a <b><span id="dc-des-av">80</span>%</b></label><input type="range" id="dc-des-a" min="50" max="95" step="5" value="80"></div>
-          <div class="ctl"><label>Sample rate f<sub>s</sub> <b><span id="dc-des-fsv">2.0</span> GHz</b></label><input type="range" id="dc-des-fs" min="0.5" max="6" step="0.1" value="2"></div>
+          <div class="ctl"><label><span>Sample rate f<sub>s</sub></span> <b><span id="dc-des-fsv">2.0</span> GHz</b></label><input type="range" id="dc-des-fs" min="0.5" max="6" step="0.1" value="2"></div>
           <div class="ctl"><label>Adder word length <b><span id="dc-des-wordv">16</span> bits</b></label><input type="range" id="dc-des-word" min="8" max="24" step="1" value="16"></div>
           <div class="ctl"><label>Simultaneous false targets <b><span id="dc-des-nftv">8</span></b></label><input type="range" id="dc-des-nft" min="1" max="64" step="1" value="8"></div>
         </div>
@@ -947,21 +951,22 @@
         <div class="ctl"><label>Free-space range R₀ <b><span id="mp-r0v">200</span> km</b></label><input type="range" id="mp-r0" min="40" max="500" step="10" value="200"></div>
         <div class="ctl"><label>Surface</label><div class="seg" id="mp-surf"><button data-o="sea" class="on">Sea</button><button data-o="land">Land</button><button data-o="perfect">Perfect</button></div></div>
         <div class="ctl"><label>Polarization</label><div class="seg" id="mp-pol"><button data-o="h" class="on">Horizontal</button><button data-o="v">Vertical</button></div></div>
-        <div class="ctl"><label>Surface roughness (σ<sub>h</sub>) <b><span id="mp-rghv">0.2</span> m</b></label><input type="range" id="mp-rgh" min="0" max="2" step="0.05" value="0.2"></div>
-        <div class="ctl"><label>Earth model</label><div class="seg" id="mp-earth"><button data-o="curved" class="on">4/3 earth</button><button data-o="flat">Flat</button></div></div>
+        <div class="ctl"><label>Visualization</label><div class="seg" id="mp-view"><button data-o="lobes" class="on">Range vs elevation</button><button data-o="coverage">Coverage envelope</button></div></div>
+        <div class="ctl"><label><span>Surface roughness (σ<sub>h</sub>)</span> <b><span id="mp-rghv">0.2</span> m</b></label><input type="range" id="mp-rgh" min="0" max="2" step="0.05" value="0.2"></div>
+        <div class="ctl" id="mp-earth-wrap" style="display:none"><label>Earth model</label><div class="seg" id="mp-earth"><button data-o="curved" class="on">4/3 earth</button><button data-o="flat">Flat</button></div></div>
         <div class="ctl"><label>Max elevation shown <b><span id="mp-elv">20</span>°</b></label><input type="range" id="mp-el" min="5" max="60" step="1" value="20"></div>
       </div>
       <div class="stage">
-        <div class="legend"><span><i class="swatch" style="background:var(--s2)"></i>Multipath coverage</span><span><i class="swatch" style="background:var(--s3)"></i>Free-space</span><span><i class="swatch" style="background:var(--muted)"></i>Radio horizon</span></div>
+        <div class="legend" id="mp-legend"><span><i class="swatch" style="background:var(--s2)"></i>Multipath detection range</span><span><i class="swatch" style="background:var(--s3)"></i>Free-space R₀</span></div>
         <div class="can-wrap"><canvas id="c-mpath"></canvas><div class="tip" id="tip-mpath"></div></div>
-        <div class="cap">Vertical-plane coverage. The direct and surface-reflected rays interfere into lobes; detection range at each elevation is R₀·F, where F is the pattern-propagation factor (0–2). Uses the selected <b>scenario radar's frequency</b> for λ.</div>
+        <div class="cap" id="mp-cap">Detection range versus elevation angle. The direct and surface-reflected fields interfere into lobes and nulls; the dashed line is the free-space range R₀. This view makes the effects of height, polarization, wavelength, and surface roughness explicit.</div>
         <div class="readouts">
           <div class="stat"><div class="k">λ (scenario radar)</div><div class="v" id="mp-lam">–</div></div>
           <div class="stat"><div class="k">First lobe max</div><div class="v" id="mp-lobe">–</div></div>
           <div class="stat"><div class="k">First null</div><div class="v" id="mp-null">–</div></div>
-          <div class="stat"><div class="k">Peak range (2·R₀)</div><div class="v" id="mp-peak">–</div></div>
+          <div class="stat"><div class="k">Peak range (shown)</div><div class="v" id="mp-peak">–</div></div>
         </div>
-        <div class="explain"><b>Pattern-propagation factor.</b> Over a reflecting surface the field is <span class="eq">F = |1 + D·ρ·Γ·e^{jα}|</span>, with path-difference phase <span class="eq">α = (2π/λ)·2·h·sinθ</span>, reflection coefficient Γ (≈ −1 for horizontal polarization at low grazing), surface reflectivity ρ reduced by roughness (Rayleigh: <span class="eq">ρ_s = e^{−2(2πσ_h sinθ/λ)²}</span>), and divergence factor D over the curved earth. Lobe maxima double the free-space range (F=2, +12 dB two-way); nulls create low-altitude gaps a jammer or low flyer can exploit. Maxima at <span class="eq">sinθ = (2m−1)λ/(4h)</span>, nulls at <span class="eq">sinθ = mλ/(2h)</span> — raise the antenna and the lobes get finer.</div>
+        <div class="explain"><b>Pattern-propagation factor.</b> Over a reflecting surface the field is <span class="eq">F = |1 + D·ρ·Γ·e^{jα}|</span>, with path-difference phase <span class="eq">α = (2π/λ)·2·h·sinθ</span>, reflection coefficient Γ (≈ −1 for horizontal polarization at low grazing), surface reflectivity ρ reduced by roughness (Rayleigh: <span class="eq">ρ_s = e^{−2(2πσ_h sinθ/λ)²}</span>), and divergence factor D over the curved earth. For an ideal smooth, perfectly reflecting surface, F can approach 2; real reflectivity and roughness reduce the peaks and fill the nulls toward the free-space case. Maxima occur near <span class="eq">sinθ = (2m−1)λ/(4h)</span> and nulls near <span class="eq">sinθ = mλ/(2h)</span> — increasing antenna height packs the lobes more tightly in elevation.</div>
       </div>
     </div>
   </section>
@@ -972,7 +977,7 @@
       <div class="controls">
         <h3>Detection</h3>
         <div class="ctl"><label>Pulses integrated (N) <b><span id="det-nv">10</span></b></label><input type="range" id="det-n" min="1" max="64" step="1" value="10"></div>
-        <div class="ctl"><label>P<sub>fa</sub> <b>10<sup><span id="det-pfav">-6</span></sup></b></label><input type="range" id="det-pfa" min="-10" max="-3" step="1" value="-6"></div>
+        <div class="ctl"><label><span>P<sub>fa</sub></span> <b>10<sup><span id="det-pfav">-6</span></sup></b></label><input type="range" id="det-pfa" min="-10" max="-3" step="1" value="-6"></div>
         <div class="ctl"><label>Target RCS <b><span id="det-rcsv">0</span> dBsm</b></label><input type="range" id="det-rcs" min="-30" max="20" step="1" value="0"></div>
         <div class="ctl"><label>Scans in a closing pass <b><span id="det-scanv">10</span></b></label><input type="range" id="det-scan" min="1" max="30" step="1" value="10"></div>
         <div class="ctl"><label>Fluctuation model for range/cumulative</label><div class="seg" id="det-sw"><button data-o="0">Non-fluct</button><button data-o="1" class="on">SW 1</button><button data-o="3">SW 3</button></div></div>
@@ -1002,9 +1007,9 @@
         <h3>Decision tests</h3>
         <div class="ctl"><label>Detector</label><div class="seg" id="dt-crit"><button data-o="np" class="on">Neyman-Pearson</button><button data-o="bayes">Bayesian</button><button data-o="minimax">Minimax</button><button data-o="cfar">CFAR</button></div></div>
         <div class="ctl"><label>Signal SNR (separation) <b><span id="dt-snrv">6</span> dB</b></label><input type="range" id="dt-snr" min="0" max="14" step="0.5" value="6"></div>
-        <div class="ctl" id="dt-pfa-wrap"><label>P<sub>fa</sub> <b>10<sup><span id="dt-pfav">-4</span></sup></b></label><input type="range" id="dt-pfa" min="-8" max="-1" step="1" value="-4"></div>
+        <div class="ctl" id="dt-pfa-wrap"><label><span>P<sub>fa</sub></span> <b>10<sup><span id="dt-pfav">-4</span></sup></b></label><input type="range" id="dt-pfa" min="-8" max="-1" step="1" value="-4"></div>
         <div class="ctl" id="dt-p1-wrap" style="display:none"><label>Prior P(H₁) <b><span id="dt-p1v">0.50</span></b></label><input type="range" id="dt-p1" min="0.05" max="0.95" step="0.05" value="0.5"></div>
-        <div class="ctl" id="dt-cost-wrap" style="display:none"><label>Cost ratio C<sub>FA</sub>/C<sub>M</sub> <b><span id="dt-costv">1.0</span></b></label><input type="range" id="dt-cost" min="0.1" max="10" step="0.1" value="1"></div>
+        <div class="ctl" id="dt-cost-wrap" style="display:none"><label><span>Cost ratio C<sub>FA</sub>/C<sub>M</sub></span> <b><span id="dt-costv">1.0</span></b></label><input type="range" id="dt-cost" min="0.1" max="10" step="0.1" value="1"></div>
         <div class="ctl" id="dt-nref-wrap" style="display:none"><label>CFAR reference cells <b><span id="dt-nrefv">16</span></b></label><input type="range" id="dt-nref" min="4" max="64" step="2" value="16"></div>
         <div style="font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5">Detection theory — Garren, Majumder &amp; Blasch (Tables 6.1–6.2); Kay, <i>Detection Theory</i>. Illustrative / notional.</div>
       </div>
@@ -1085,11 +1090,11 @@
         <div class="ctl"><label>Jammer ERP σ <b><span id="bm-serpv">3</span> dB</b></label><input type="range" id="bm-serp" min="0" max="10" step="0.5" value="3"></div>
         <div class="ctl"><label>Jammer range σ <b><span id="bm-srjv">20</span> km</b></label><input type="range" id="bm-srj" min="0" max="80" step="5" value="20"></div>
         <div class="ctl"><label>Target RCS σ <b><span id="bm-srcsv">4</span> dB</b></label><input type="range" id="bm-srcs" min="0" max="12" step="0.5" value="4"></div>
-        <div class="ctl"><label>Trials <b><span id="bm-trv">4000</span></b></label><input type="range" id="bm-tr" min="500" max="20000" step="500" value="4000"></div>
+        <div class="ctl"><label>Trials used <b><span id="bm-trv">4000</span></b></label><input type="range" id="bm-tr" min="500" max="20000" step="500" value="4000"></div>
       </div>
       <div class="stage">
         <div class="can-wrap"><canvas id="c-burnmc"></canvas><div class="tip" id="tip-burnmc"></div></div>
-        <div class="cap">Monte Carlo burn-through range: each trial perturbs jammer ERP, jammer range, and target RCS within their 1σ bands, then solves burn-through. The spread is the confidence band a single point estimate hides. Uses the <b>scenario radar / jammer / geometry</b>.</div>
+        <div class="cap">Monte Carlo burn-through range: each trial perturbs jammer ERP, jammer range, and target RCS within their 1σ bands, then solves burn-through. The simulation uses a <b>fixed seeded random ensemble</b>, so the same underlying trials are reused as controls change; differences you see come from the parameters, not a fresh random draw. Uses the <b>scenario radar / jammer / geometry</b>.</div>
         <div class="readouts">
           <div class="stat"><div class="k">Mean burn-through</div><div class="v" id="bm-mean">–</div></div>
           <div class="stat"><div class="k">Std deviation</div><div class="v" id="bm-std">–</div></div>
@@ -4063,7 +4068,7 @@ listen(['rhi-rain'],()=>drawRHI(tnow));
 gid('sp-load').onclick=()=>{ const r=scenRadar(); const set=(id,v,mn,mx,dec)=>{ const el=gid(id); if(!el)return; v=Math.max(mn,Math.min(mx,v)); el.value=(dec?v.toFixed(dec):Math.round(v)); const s=gid(id+'v'); if(s) s.textContent=el.value; };
   set('sp-f', r.f, 1, 12, 1); if(r.prf) set('sp-prf', r.prf/1000, 0.5, 10, 1); if(r.pw) set('sp-tau', r.pw, 1, 60, 0); if(r.Br) set('sp-bw', r.Br, 1, 40, 0);
   sysMsg&&0; drawSP(); };
-segWire('mp-surf',drawMpath); segWire('mp-pol',drawMpath); segWire('mp-earth',drawMpath);
+segWire('mp-surf',drawMpath); segWire('mp-pol',drawMpath); segWire('mp-view',drawMpath); segWire('mp-earth',drawMpath);
 listen(['mp-h','mp-r0','mp-rgh','mp-el'],drawMpath);
 segWire('det-sw',drawDet); segWire('det-view',drawDet);
 listen(['det-n','det-pfa','det-rcs','det-scan','det-snr','det-tr'],drawDet);
@@ -4090,13 +4095,15 @@ function drawMpath(){
   const h=+gid('mp-h').value, R0=+gid('mp-r0').value, elMax=+gid('mp-el').value;
   const surf=document.querySelector('#mp-surf button.on').dataset.o;
   const pol=document.querySelector('#mp-pol button.on').dataset.o;
+  const view=segOn('mp-view')||'lobes';
   const sigh=+gid('mp-rgh').value, curved=document.querySelector('#mp-earth button.on').dataset.o==='curved';
   gid('mp-hv').textContent=h; gid('mp-r0v').textContent=R0; gid('mp-elv').textContent=elMax; gid('mp-rghv').textContent=sigh.toFixed(2);
   gid('mp-lam').innerHTML=(lam*100).toFixed(1)+' <small>cm</small>';
+  gid('mp-earth-wrap').style.display=view==='coverage'?'':'none';
   const rho0 = surf==='sea'?0.9 : surf==='land'?0.55 : 1.0;
   const kE=4/3, Re=6371e3;
   function F(thetaDeg){ const th=thetaDeg*D2R;
-    const alpha=(2*Math.PI/lam)*2*h*Math.sin(th);          // round-trip path-diff phase
+    const alpha=(2*Math.PI/lam)*2*h*Math.sin(th);          // round-trip path-difference phase
     const rghF=Math.exp(-2*Math.pow(2*Math.PI*sigh*Math.sin(th)/lam,2)); // Rayleigh roughness
     let rho=rho0*rghF, gphase=Math.PI;                     // horizontal pol: Γ≈ρ∠180°
     if(pol==='v'){ // vertical: |Γ| dips to ~0 at the pseudo-Brewster angle, phase flips 180°→0°
@@ -4105,37 +4112,51 @@ function drawMpath(){
     const re=1+D*rho*Math.cos(alpha+gphase), im=D*rho*Math.sin(alpha+gphase);
     return Math.sqrt(re*re+im*im);
   }
-  const {c,ctx,w,ht}=(()=>{const o=setupCanvas('c-mpath',0.62);return{c:o.c,ctx:o.ctx,w:o.w,ht:o.h};})();
-  ctx.clearRect(0,0,w,ht);
+  const firstLobe=Math.asin(Math.min(1,lam/(4*h)))/D2R, firstNull=Math.asin(Math.min(1,lam/(2*h)))/D2R;
+  const samples=[]; let peakRange=0;
+  for(let e=0;e<=elMax+1e-9;e+=0.05){ const range=R0*F(e); samples.push({e,range}); if(range>peakRange)peakRange=range; }
+  gid('mp-lobe').innerHTML=firstLobe.toFixed(2)+' <small>°</small>';
+  gid('mp-null').innerHTML=firstNull.toFixed(2)+' <small>°</small>';
+  gid('mp-peak').innerHTML=peakRange.toFixed(0)+' <small>km</small>';
+
+  if(view==='lobes'){
+    gid('mp-legend').innerHTML='<span><i class="swatch" style="background:var(--s2)"></i>Multipath detection range</span><span><i class="swatch" style="background:var(--s3)"></i>Free-space R₀</span>';
+    gid('mp-cap').innerHTML='Detection range versus elevation angle. The direct and surface-reflected fields interfere into lobes and nulls; the dashed line is the free-space range R₀. Roughness damps the reflected field, pulling the curve back toward free-space.';
+    const {ctx,w,h:ch}=setupCanvas('c-mpath',0.54); ctx.clearRect(0,0,w,ch);
+    const yMax=Math.max(R0*2.05,peakRange*1.06), xt=niceTicks(0,elMax,5).map(v=>Math.round(v*10)/10), yt=niceTicks(0,yMax,5).map(v=>Math.round(v));
+    const {gx,gy}=axes(ctx,w,ch,0,elMax,0,yMax,'Elevation angle (°)','Detection range (km)',xt,yt);
+    // Free-space reference
+    ctx.strokeStyle=css('--s3'); ctx.setLineDash([6,4]); ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(gx(0),gy(R0)); ctx.lineTo(gx(elMax),gy(R0)); ctx.stroke(); ctx.setLineDash([]);
+    // Multipath range curve
+    ctx.strokeStyle=css('--s2'); ctx.lineWidth=2; ctx.beginPath();
+    samples.forEach((p,i)=>{ const X=gx(p.e),Y=gy(p.range); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }); ctx.stroke();
+    // Ideal first-lobe / first-null locations help connect the curve to the equations.
+    const marks=[{x:firstLobe,label:'1st max',col:css('--good')},{x:firstNull,label:'1st null',col:css('--warn')}];
+    if(pol==='v') marks.push({x:8,label:'V-pol dip',col:css('--muted')});
+    for(const m of marks){ if(!(m.x>0&&m.x<=elMax))continue; const X=gx(m.x); ctx.strokeStyle=m.col; ctx.globalAlpha=.75; ctx.setLineDash([3,3]); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X,PAD.t); ctx.lineTo(X,ch-PAD.b); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1; ctx.fillStyle=m.col; ctx.font='9px system-ui'; ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText(m.label,X+3,PAD.t+3); }
+    watermark(ctx,w,ch);
+    return;
+  }
+
+  gid('mp-legend').innerHTML='<span><i class="swatch" style="background:var(--s2)"></i>Multipath coverage</span><span><i class="swatch" style="background:var(--s3)"></i>Free-space</span><span><i class="swatch" style="background:var(--muted)"></i>Radio horizon</span>';
+  gid('mp-cap').innerHTML='Coverage-envelope view. The multipath range R₀·F(θ) is projected into ground range and altitude; the dashed arc is free-space coverage and the dotted curve is the approximate radio horizon for the selected earth model.';
+  const {ctx,w,h:ch}=setupCanvas('c-mpath',0.62); ctx.clearRect(0,0,w,ch);
   const xMax=2.1*R0, yMax=xMax*Math.tan(elMax*D2R)*1.05;
   const xt=niceTicks(0,xMax,6).map(v=>Math.round(v)), yt=niceTicks(0,yMax,5).map(v=>Math.round(v));
-  const {gx,gy}=axes(ctx,w,ht,0,xMax,0,yMax,'Ground range (km)','Altitude (km)',xt,yt);
+  const {gx,gy}=axes(ctx,w,ch,0,xMax,0,yMax,'Ground range (km)','Altitude (km)',xt,yt);
   // free-space reference arc (radius R0)
   ctx.strokeStyle=css('--s3'); ctx.setLineDash([6,4]); ctx.lineWidth=1.6; ctx.beginPath();
   for(let e=0;e<=elMax;e+=0.5){ const th=e*D2R; const X=gx(R0*Math.cos(th)), Y=gy(R0*Math.sin(th)); e?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.setLineDash([]);
-  // multipath coverage (filled)
+  // multipath coverage envelope
   ctx.beginPath(); ctx.moveTo(gx(0),gy(0));
-  let lobeMax=0, lobeAng=0;
-  for(let e=0;e<=elMax;e+=0.25){ const th=e*D2R; const r=R0*F(e);
-    let alt=r*Math.sin(th); if(curved) alt+=Math.pow(r*1000,2)/(2*kE*Re)/1000*0; // altitude of point (curvature adj small here)
-    const grnd=r*Math.cos(th);
-    const X=gx(grnd), Y=gy(alt); ctx.lineTo(X,Y);
-    if(r>lobeMax){lobeMax=r;lobeAng=e;}
-  }
-  ctx.lineTo(gx(0),gy(yMax)); ctx.closePath();
-  ctx.fillStyle=css('--s2'); ctx.globalAlpha=0.20; ctx.fill(); ctx.globalAlpha=1;
+  for(let e=0;e<=elMax;e+=0.25){ const th=e*D2R, r=R0*F(e), alt=r*Math.sin(th), grnd=r*Math.cos(th); ctx.lineTo(gx(grnd),gy(alt)); }
+  ctx.lineTo(gx(0),gy(yMax)); ctx.closePath(); ctx.fillStyle=css('--s2'); ctx.globalAlpha=0.20; ctx.fill(); ctx.globalAlpha=1;
   ctx.strokeStyle=css('--s2'); ctx.lineWidth=1.8; ctx.beginPath();
-  for(let e=0;e<=elMax;e+=0.25){ const th=e*D2R; const r=R0*F(e); const X=gx(r*Math.cos(th)), Y=gy(r*Math.sin(th)); e?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke();
+  for(let e=0;e<=elMax;e+=0.25){ const th=e*D2R, r=R0*F(e), X=gx(r*Math.cos(th)), Y=gy(r*Math.sin(th)); e?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke();
   // radio horizon (curved earth): altitude a target must exceed to be seen at range x
   if(curved){ ctx.strokeStyle=css('--muted'); ctx.setLineDash([3,3]); ctx.lineWidth=1.2; ctx.beginPath();
-    for(let x=0;x<=xMax;x+=xMax/120){ const gapAlt=Math.max(0, (Math.pow(x*1000,2)/(2*kE*Re) - h)/1000 ); // rough low-alt shadow
-      const X=gx(x), Y=gy(gapAlt); x?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.setLineDash([]); }
-  watermark(ctx,w,ht);
-  // readouts
-  const firstLobe=Math.asin(Math.min(1,lam/(4*h)))/D2R, firstNull=Math.asin(Math.min(1,lam/(2*h)))/D2R;
-  gid('mp-lobe').innerHTML=firstLobe.toFixed(2)+' <small>°</small>';
-  gid('mp-null').innerHTML=firstNull.toFixed(2)+' <small>°</small>';
-  gid('mp-peak').innerHTML=(2*R0).toFixed(0)+' <small>km</small>';
+    for(let x=0;x<=xMax;x+=xMax/120){ const gapAlt=Math.max(0,(Math.pow(x*1000,2)/(2*kE*Re)-h)/1000), X=gx(x),Y=gy(gapAlt); x?ctx.lineTo(X,Y):ctx.moveTo(X,Y);} ctx.stroke(); ctx.setLineDash([]); }
+  watermark(ctx,w,ch);
 }
 
 /* ---- 17 · Detection cascade (Shnidman) ---- */
@@ -4360,6 +4381,40 @@ function computeRangeEq(){
      markers:(rng>0&&rng<=xmax)?[{x:rng,color:css('--s1'),label:'R_det'}]:[], yMin:-20,yMax:60,xMin:2,xMax:xmax,unit:'dB'});
 }
 /* ---- 21 · Burn-through Monte Carlo ---- */
+// Fixed common-random-number ensemble.  The seed is intentionally constant so
+// the Monte Carlo population is reproducible across redraws and page reloads.
+// Changing a control transforms the same underlying standard-normal samples,
+// making before/after comparisons meaningful instead of adding resampling noise.
+const BURN_MC_MAX_TRIALS=20000;
+const BURN_MC_SEED=0x4f70656e; // "Open" — stable project seed
+function burnMcPRNG(seed){
+  let a=seed>>>0;
+  return function(){
+    a=(a+0x6D2B79F5)>>>0;
+    let t=a;
+    t=Math.imul(t^(t>>>15),t|1);
+    t^=t+Math.imul(t^(t>>>7),t|61);
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+function burnMcRandn(rng){
+  let u=0,v=0;
+  while(u===0) u=rng();
+  while(v===0) v=rng();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(TAU*v);
+}
+const BURN_MC_SAMPLES=(()=>{
+  const rng=burnMcPRNG(BURN_MC_SEED);
+  const erp=new Float64Array(BURN_MC_MAX_TRIALS);
+  const range=new Float64Array(BURN_MC_MAX_TRIALS);
+  const rcs=new Float64Array(BURN_MC_MAX_TRIALS);
+  for(let i=0;i<BURN_MC_MAX_TRIALS;i++){
+    erp[i]=burnMcRandn(rng);
+    range[i]=burnMcRandn(rng);
+    rcs[i]=burnMcRandn(rng);
+  }
+  return {erp,range,rcs};
+})();
 function drawBurnMC(){
   const R=scenRadar(), jam=jammerById(gid('g-jammer').value)||JAMMERS[0], type=scenType();
   const rcs=+gid('bm-rcs').value, Rj=+gid('bm-rj').value, Bj=+gid('bm-bw').value, thr=+gid('bm-thr').value;
@@ -4367,9 +4422,11 @@ function drawBurnMC(){
   gid('bm-rcsv').textContent=rcs;gid('bm-rjv').textContent=Rj;gid('bm-bwv').textContent=Bj;gid('bm-thrv').textContent=thr;
   gid('bm-serpv').textContent=sErp.toFixed(1);gid('bm-srjv').textContent=sRj;gid('bm-srcsv').textContent=sRcs.toFixed(1);gid('bm-trv').textContent=trials;
   const vals=[]; let none=0;
-  for(let t=0;t<trials;t++){
-    const jam2={...jam, ERP:jam.ERP*Math.pow(10,(randn()*sErp)/10)};
-    const rj=Math.max(5,Rj+randn()*sRj), rc=rcs+randn()*sRcs;
+  const nTrials=Math.min(BURN_MC_MAX_TRIALS,Math.max(1,trials));
+  for(let t=0;t<nTrials;t++){
+    const jam2={...jam, ERP:jam.ERP*Math.pow(10,(BURN_MC_SAMPLES.erp[t]*sErp)/10)};
+    const rj=Math.max(5,Rj+BURN_MC_SAMPLES.range[t]*sRj);
+    const rc=rcs+BURN_MC_SAMPLES.rcs[t]*sRcs;
     const bt=burnRange(R,jam2,type,rc,rj,Bj,thr);
     if(bt<=0) none++; else vals.push(bt);
   }
@@ -4380,7 +4437,7 @@ function drawBurnMC(){
   gid('bm-mean').innerHTML=(n?mean.toFixed(0):'—')+' <small>km</small>';
   gid('bm-std').innerHTML=(n?sd.toFixed(1):'—')+' <small>km</small>';
   gid('bm-pct').innerHTML=(n?pct(0.1).toFixed(0)+'–'+pct(0.9).toFixed(0):'—')+' <small>km</small>';
-  gid('bm-none').innerHTML=(100*none/trials).toFixed(1)+' <small>%</small>';
+  gid('bm-none').innerHTML=(100*none/nTrials).toFixed(1)+' <small>%</small>';
   const {c,ctx,w,h}=setupCanvas('c-burnmc',0.55); ctx.clearRect(0,0,w,h);
   const xMax=Math.max(10,(n?vals[n-1]:R.Rmax)*1.05), nb=30, bins=new Array(nb).fill(0);
   vals.forEach(v=>{ bins[Math.min(nb-1,Math.floor(v/xMax*nb))]++; });
